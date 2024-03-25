@@ -15,6 +15,7 @@ type
     SessionEventTable* = Table[SessionId, Table[ProtocolEvent, seq[EventHandler]]]
     GlobalEventTable* = Table[ProtocolEvent, seq[EventHandler]]
     Browser* = ref object
+        userDataDir*: string
         ws*: WebSocket
         requestId*: int
         responseTable*: ResponseTable

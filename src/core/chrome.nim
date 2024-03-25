@@ -12,7 +12,8 @@ import std/[strutils, os, sequtils, osproc, streams]
 type
     BrowserNotFound = object of CatchableError
     HeadlessMode* {.pure.} = enum ## Headless mode for Chrome
-        True, False, New
+        On, Off, Legacy
+
 
 proc findChromeMac: string =
     const defaultPath :string = r"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
@@ -32,7 +33,6 @@ proc findChromeMac: string =
 
     except:
         raise newException(BrowserNotFound, "could not find Chrome in Applications directory")
-
 
 when defined(Windows):
     import std/registry
@@ -54,14 +54,12 @@ proc findChromeWindows: string =
     if result.len == 0:
         raise newException(BrowserNotFound, "could not find Chrome")
 
-
 proc findChromeLinux: string =
     const chromeNames = ["google-chrome", "google-chrome-stable", "chromium-browser", "chromium"]
     for name in chromeNames:
         if execCmd("which " & name) == 0:
             return name
     raise newException(BrowserNotFound, "could not find Chrome")
-
 
 proc findChromePath: string =
     when hostOS == "macosx":
@@ -73,14 +71,20 @@ proc findChromePath: string =
     else:
         raise newException(BrowserNotFound, "unkown OS in findPath(): " & hostOS)
 
+proc startChrome*(portNo: int; userDataDir: string; headless: HeadlessMode;
+                  chromeArguments: seq[string]): string =
+    var command = findChromePath() & " --remote-debugging-port=" & $portNo &
+                " --user-data-dir=" & userDataDir & " --no-first-run"
+    command.add(
+        case headless
+            of HeadlessMode.On: " --headless=new"
+            of HeadlessMode.Off: ""
+            of HeadlessMode.Legacy: " --headless=new"
+            )
+    
+    for arg in chromeArguments:
+        command.add(" " & arg.strip())
 
-proc startChrome*(portNo: int; userDataDir: string; headless: HeadlessMode): string =
-    let command = findChromePath() & " --remote-debugging-port=" & $portNo &
-                " --user-data-dir=" & userDataDir &
-                (case headless
-                    of HeadlessMode.True: " --headless"
-                    of HeadlessMode.False: ""
-                    of HeadlessMode.New: " --headless=new")
     let
         process = startProcess(command, options={poStdErrToStdOut, poUsePath, poEvalCommand})
         outputStream = process.outputStream()
@@ -89,6 +93,13 @@ proc startChrome*(portNo: int; userDataDir: string; headless: HeadlessMode): str
         if "DevTools listening" in line:
             result = line[22 .. ^1] # path to websocket endpoint # https://github.com/aslushnikov/getting-started-with-cdp/blob/master/README.md#protocol-fundamentals
             break
+        elif "Opening in existing browser session" in line:
+            process.close()
+            raise newException(CatchableError, "Chrome is using an existing session. Something is wrong.")
+            # TODO: better error handling
+        else:
+            when defined(debug): log("Chrome instance line: " & line)
+            discard
         # TODO: do we need to handle errors here?
     # TODO: for some reason... process stops running before the while loop or maybe
     # after the while loop runs once. Need to investigate this.

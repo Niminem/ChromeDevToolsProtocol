@@ -2,22 +2,32 @@
 ## The Browser type is used to interact with a Chrome browser instance,
 ## create new tabs, close tabs, register and listen for CDP events, etc.
 
-import std/[json, asyncdispatch, tables]
+import std/[json, asyncdispatch, tables, os, tempfiles]
 import pkg/ws
-import base, chrome, ../domains/target
+import base, chrome, ../domains/[target, browser_domain]
 
 {.experimental: "codeReordering".} # remove need for fwd declarations
 
-proc launchBrowser*(userDataDir: string; portNo = 0; headless = HeadlessMode.True): Future[Browser] {.async} =
+proc launchBrowser*(userDataDir = "";
+                    portNo = 0; headlessMode = HeadlessMode.On;
+                    chromeArguments: seq[string] = @[]): Future[Browser] {.async} =
     new result
-    result.ws = await newWebSocket(startChrome(portNo, userDataDir, headless))
+    if userDataDir == "": result.userDataDir = newTmpUserDataDir()
+    else: result.userDataDir = userDataDir
+    result.ws = await newWebSocket(startChrome(portNo, result.userDataDir,
+                                               headlessMode, chromeArguments))
     asyncCheck result.launchCDPListener()
 
 proc close*(browser: Browser) {.async.} =
-    let targets = (await browser.getTargets())["result"]["targetInfos"].to(seq[JsonNode])
-    for target in targets:
-        await browser.closeTarget(target["targetId"].to(string))
+    await browser.closeBrowserDomain()
     browser.ws.close()
+    for attempt in 1 .. 3:
+        await sleepAsync 1000 # wait for browser to close
+        try:
+            browser.userDataDir.removeDir()
+            break
+        except OSError as e:
+            if attempt == 3: raise e
 
 proc newTab*(browser: Browser): Future[Tab] {.async.} =
     let
@@ -25,11 +35,15 @@ proc newTab*(browser: Browser): Future[Tab] {.async.} =
         sessionId = (await browser.attachToTarget(targetId))["result"]["sessionId"].to(string)
     result = Tab(browser: browser, sessionId: sessionId)
 
+proc newTmpUserDataDir(): string =
+    result = createTempDir("cdp_","_tmpdir")
+
 proc launchCDPListener(browser: Browser) {.async.} =
     while browser.ws.readyState == Open:
-        let
-            packet = await browser.ws.receiveStrPacket()
-            jsn = parseJson(packet)
+        var packet = ""
+        try: packet = await browser.ws.receiveStrPacket()
+        except WebSocketError: break
+        let jsn = parseJson(packet)
         if jsn.hasKey("id"): # CDP response
             let id = jsn["id"].getInt()
             if browser.responseTable.hasKey(id):
@@ -53,5 +67,3 @@ proc addSessionEvent*(browser: Browser; sessionId: SessionId; event: ProtocolEve
         browser.sessionEventTable[sessionId] = initTable[ProtocolEvent, seq[EventHandler]]()
     if browser.sessionEventTable[sessionId].hasKeyOrPut(event, @[handler]):
         browser.sessionEventTable[sessionId][event].add(handler)
-
-echo "\nTODO: Implement removeSessionEvent, addGlobalEvent, removeGlobalEvent procedures."
