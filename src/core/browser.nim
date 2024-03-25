@@ -55,15 +55,43 @@ proc launchCDPListener(browser: Browser) {.async.} =
                 let sessionId = jsn["sessionId"].getStr()
                 if browser.sessionEventTable.hasKey(sessionId):
                     if browser.sessionEventTable[sessionId].hasKey(mthd):
-                        for handler in browser.sessionEventTable[sessionId][mthd]:
-                            asyncCheck handler(jsn)
+                        # for handler in browser.sessionEventTable[sessionId][mthd]:
+                        asyncCheck browser.sessionEventTable[sessionId][mthd](jsn)
             else:
                 if browser.globalEventTable.hasKey(mthd): # CDP Global event
-                    for handler in browser.globalEventTable[mthd]:
-                        asyncCheck handler(jsn)
+                    # for handler in browser.globalEventTable[mthd]:
+                    asyncCheck browser.globalEventTable[mthd](jsn)
 
-proc addSessionEvent*(browser: Browser; sessionId: SessionId; event: ProtocolEvent; handler: EventHandler) {.async.} =
+proc addSessionEventCallback*(browser: Browser; sessionId: SessionId; event: ProtocolEvent; handler: EventHandler) =
     if not browser.sessionEventTable.hasKey(sessionId):
-        browser.sessionEventTable[sessionId] = initTable[ProtocolEvent, seq[EventHandler]]()
-    if browser.sessionEventTable[sessionId].hasKeyOrPut(event, @[handler]):
-        browser.sessionEventTable[sessionId][event].add(handler)
+        browser.sessionEventTable[sessionId] = initTable[ProtocolEvent, EventHandler]()
+    browser.sessionEventTable[sessionId][event] = handler
+
+proc waitForSessionEvent*(browser: Browser; sessionId: string;
+                          event: ProtocolEvent): Future[JsonNode] {.async.} =
+    let future = newFuture[JsonNode]()
+    browser.addSessionEventCallback(sessionId, event, proc(jsn: JsonNode) {.async.} =
+        future.complete(jsn))
+    result = await future
+    browser.sessionEventTable[sessionId].del(event)
+
+proc addGlobalEventCallback*(browser: Browser; event: ProtocolEvent; handler: EventHandler) =
+    browser.globalEventTable[event] = handler
+
+proc waitForGlobalEvent*(browser: Browser; event: ProtocolEvent): Future[JsonNode] {.async.} =
+    let future = newFuture[JsonNode]()
+    browser.addGlobalEventCallback(event, proc(jsn: JsonNode) {.async.} =
+        future.complete(jsn))
+    result = await future
+    browser.globalEventTable.del(event)
+
+proc deleteSessionEventCallback*(browser: Browser; sessionId: SessionId; event: ProtocolEvent) =
+    if browser.sessionEventTable.hasKey(sessionId):
+        if browser.sessionEventTable[sessionId].hasKey(event):
+            browser.sessionEventTable[sessionId].del(event)
+            log "Deleted session event callback for event: " & event
+
+proc deleteGlobalEventCallback*(browser: Browser; event: ProtocolEvent) =
+    if browser.globalEventTable.hasKey(event):
+        browser.globalEventTable.del(event)
+        log "Deleted global event callback for event: " & event

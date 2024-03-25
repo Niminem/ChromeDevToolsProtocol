@@ -10,10 +10,10 @@ type
     CDPError* = object of CatchableError
     SessionId* = string
     ProtocolEvent* = string
-    EventHandler* = proc(eventData: JsonNode) {.async.}
+    EventHandler* = proc(data: JsonNode) {.async.}
     ResponseTable* = Table[int, Future[JsonNode]]
-    SessionEventTable* = Table[SessionId, Table[ProtocolEvent, seq[EventHandler]]]
-    GlobalEventTable* = Table[ProtocolEvent, seq[EventHandler]]
+    SessionEventTable* = Table[SessionId, Table[ProtocolEvent, EventHandler]]
+    GlobalEventTable* = Table[ProtocolEvent, EventHandler]
     Browser* = ref object
         userDataDir*: string
         ws*: WebSocket

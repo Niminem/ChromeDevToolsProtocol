@@ -8,6 +8,7 @@
 ## version is the actual browser rather than a separate browser implementation.
 
 import std/[strutils, os, sequtils, osproc, streams]
+import base
 
 type
     BrowserNotFound = object of CatchableError
@@ -97,6 +98,7 @@ proc startChrome*(portNo: int; userDataDir: string; headless: HeadlessMode;
             process.close()
             raise newException(CatchableError, "Chrome is using an existing session. Something is wrong.")
             # TODO: better error handling
+        elif line == "": continue
         else:
             when defined(debug): log("Chrome instance line: " & line)
             discard
