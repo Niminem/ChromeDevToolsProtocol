@@ -1,8 +1,8 @@
-## This module contains the Browser type and related procedures.
-## The Browser type is used to interact with a Chrome browser instance,
+## This module contains the `Browser` procedures.
+## The `Browser` type is used to interact with a Chrome browser instance,
 ## create new tabs, close tabs, register and listen for CDP events, etc.
 
-import std/[json, asyncdispatch, tables, os, tempfiles]
+import std/[json, asyncdispatch, tables, os, tempfiles, osproc]
 import pkg/ws
 import base, chrome, ../domains/[target, browser_domain]
 
@@ -21,13 +21,17 @@ proc launchBrowser*(userDataDir = "";
             raise e
         result.userDataDir = (dir: tmpDir, isTempDir: true)
     else: result.userDataDir = (dir: userDataDir, isTempDir: false)
-    result.ws = await newWebSocket(startChrome(portNo, result.userDataDir.dir,
-                                               headlessMode, chromeArguments))
+
+    let (chrome, endpoint) = startChrome(portNo, result.userDataDir.dir,
+                                         headlessMode, chromeArguments)
+    result.chrome = chrome
+    result.ws = await newWebSocket(endpoint)
     asyncCheck result.launchCDPListener()
 
 proc close*(browser: Browser) {.async.} =
     await browser.closeBrowserDomain()
     browser.ws.close()
+    var errorLog: string
     if browser.userDataDir.isTempDir:
         for attempt in 1 .. 3:
             await sleepAsync 1000 # wait for browser to close (3 secs max)
@@ -36,8 +40,14 @@ proc close*(browser: Browser) {.async.} =
                 break
             except OSError as e:
                 if attempt == 3:
-                    echo "Error deleting user data dir: " & e.msg
-                    raise e
+                    errorLog.add("[OsError] error deleting user data dir: " & browser.userDataDir.dir &
+                        "message: " & e.msg
+                    )
+    browser.chrome.terminate()
+    browser.chrome.close()
+    if errorLog.len > 0:
+        raise newException(OSError, errorLog)
+
 
 proc newTab*(browser: Browser): Future[Tab] {.async.} =
     let
@@ -53,8 +63,8 @@ proc launchCDPListener(browser: Browser) {.async.} =
         var jsn: JsonNode
         try: jsn = parseJson(packet)
         except JsonParsingError as e:
-            echo "Error parsing JSON: " & e.msg
-            echo "Packet: " & packet
+            echo "error parsing JSON from packet. message: " & e.msg &
+                "\npacket received: " & packet
             raise e
 
         if jsn.hasKey("id"): # CDP response
@@ -72,7 +82,7 @@ proc launchCDPListener(browser: Browser) {.async.} =
             else:  # CDP Global event
                 if browser.globalEventTable.hasKey(mthd):
                     asyncCheck browser.globalEventTable[mthd](jsn)
-        else: # CDP error (something went wrong with the CDP packet)
+        else: # CDP error of some kind
             raise newException(CDPError, "JSON from CDP packet does not contain 'id' or 'method':\n" & packet)
 
 proc addGlobalEventCallback*(browser: Browser; event: ProtocolEvent; cb: EventCallback) =

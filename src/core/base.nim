@@ -1,7 +1,7 @@
 ## This module provides the basic types and procedures for interacting with
 ## the Chrome DevTools Protocol (CDP).
 
-import std/[json, asyncdispatch, tables]
+import std/[json, asyncdispatch, tables, osproc]
 import pkg/ws
 
 type
@@ -13,6 +13,7 @@ type
     SessionEventTable* = Table[SessionId, Table[ProtocolEvent, EventCallback]]
     GlobalEventTable* = Table[ProtocolEvent, EventCallback]
     Browser* = ref object
+        chrome*: Process
         userDataDir*: tuple[dir: string, isTempDir: bool]
         ws*: WebSocket
         requestId*: int

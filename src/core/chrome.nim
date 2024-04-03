@@ -74,10 +74,9 @@ proc findChromePath: string =
         raise newException(BrowserError, "unkown OS in `findPath` procedure: " & hostOS)
 
 proc startChrome*(portNo: int; userDataDir: string; headless: HeadlessMode;
-                  chromeArguments: seq[string]): string =
+                  chromeArguments: seq[string]): tuple[chrome: Process, cdpEndPoint: string] =
     var command = findChromePath() & " --remote-debugging-port=" & $portNo &
                 " --user-data-dir=" & userDataDir & " --no-first-run" & $headless
-
     for arg in chromeArguments:
         command.add(" " & arg.strip())
 
@@ -87,17 +86,23 @@ proc startChrome*(portNo: int; userDataDir: string; headless: HeadlessMode;
     while process.running() and not outputStream.atEnd():
         let line = outputStream.readLine()
         if "DevTools listening" in line:
-            result = line[22 .. ^1] # path to CDP websocket endpoint
+            result.cdpEndPoint = line[22 .. ^1] # path to CDP websocket endpoint
             break
         elif "Opening in existing browser session" in line:
+            process.terminate()
             process.close()
             raise newException(ProcessError,
-                "chrome is using an existing session.\nend all other Chrome Processes and try again " &
-                "(you can leave your normal browser window alone).")
+                "chrome is using an existing session.\nend all other chrome processes and try again.\n" &
+                "note: you can leave your normal browser window/session alone.")
         elif line == "": continue
         else:
+            process.terminate()
             process.close()
             raise newException(ProcessError, "unexpected output from Chrome: " & line)
-    # TODO: for some reason... process stops running before the while loop or maybe
-    # after the while loop runs once. Need to investigate this.
-    process.close()
+    if result.cdpEndPoint == "":
+        if process.running():
+            process.terminate()
+            process.close()
+        raise newException(ProcessError, "result is empty. could not find CDP websocket endpoint in Chrome output.")
+    echo "is chrome running? ", process.running()
+    result.chrome = process
