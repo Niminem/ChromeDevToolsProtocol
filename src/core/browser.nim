@@ -6,28 +6,38 @@ import std/[json, asyncdispatch, tables, os, tempfiles]
 import pkg/ws
 import base, chrome, ../domains/[target, browser_domain]
 
-{.experimental: "codeReordering".} # remove need for fwd declarations
+{.experimental: "codeReordering".}
 
 proc launchBrowser*(userDataDir = "";
                     portNo = 0; headlessMode = HeadlessMode.On;
                     chromeArguments: seq[string] = @[]): Future[Browser] {.async} =
     new result
-    if userDataDir == "": result.userDataDir = newTmpUserDataDir()
-    else: result.userDataDir = userDataDir
-    result.ws = await newWebSocket(startChrome(portNo, result.userDataDir,
+    if userDataDir == "":
+        var tmpDir: string
+        try:
+            tmpDir = createTempDir("cdp_","_tmpdir")
+        except OSError as e:
+            echo "Error creating temp dir: " & e.msg
+            raise e
+        result.userDataDir = (dir: tmpDir, isTempDir: true)
+    else: result.userDataDir = (dir: userDataDir, isTempDir: false)
+    result.ws = await newWebSocket(startChrome(portNo, result.userDataDir.dir,
                                                headlessMode, chromeArguments))
     asyncCheck result.launchCDPListener()
 
 proc close*(browser: Browser) {.async.} =
     await browser.closeBrowserDomain()
     browser.ws.close()
-    for attempt in 1 .. 3:
-        await sleepAsync 1000 # wait for browser to close
-        try:
-            browser.userDataDir.removeDir()
-            break
-        except OSError as e:
-            if attempt == 3: raise e
+    if browser.userDataDir.isTempDir:
+        for attempt in 1 .. 3:
+            await sleepAsync 1000 # wait for browser to close (3 secs max)
+            try:
+                browser.userDataDir.dir.removeDir()
+                break
+            except OSError as e:
+                if attempt == 3:
+                    echo "Error deleting user data dir: " & e.msg
+                    raise e
 
 proc newTab*(browser: Browser): Future[Tab] {.async.} =
     let
@@ -35,48 +45,43 @@ proc newTab*(browser: Browser): Future[Tab] {.async.} =
         sessionId = (await browser.attachToTarget(targetId))["result"]["sessionId"].to(string)
     result = Tab(browser: browser, sessionId: sessionId)
 
-proc newTmpUserDataDir(): string =
-    result = createTempDir("cdp_","_tmpdir")
-
 proc launchCDPListener(browser: Browser) {.async.} =
     while browser.ws.readyState == Open:
-        var packet = ""
+        var packet: string
         try: packet = await browser.ws.receiveStrPacket()
         except WebSocketError: break
-        let jsn = parseJson(packet)
+        var jsn: JsonNode
+        try: jsn = parseJson(packet)
+        except JsonParsingError as e:
+            echo "Error parsing JSON: " & e.msg
+            echo "Packet: " & packet
+            raise e
+
         if jsn.hasKey("id"): # CDP response
             let id = jsn["id"].getInt()
             if browser.responseTable.hasKey(id):
                 browser.responseTable[id].complete(jsn)
                 browser.responseTable.del(id)
-        else: # CDP event
-            let mthd = jsn["method"].getStr()
+        elif jsn.hasKey("method"): # CDP event
+            let mthd = jsn["method"].to(string)
             if jsn.hasKey("sessionId"): # CDP Session event
-                let sessionId = jsn["sessionId"].getStr()
+                let sessionId = jsn["sessionId"].to(string)
                 if browser.sessionEventTable.hasKey(sessionId):
                     if browser.sessionEventTable[sessionId].hasKey(mthd):
-                        # for handler in browser.sessionEventTable[sessionId][mthd]:
                         asyncCheck browser.sessionEventTable[sessionId][mthd](jsn)
-            else:
-                if browser.globalEventTable.hasKey(mthd): # CDP Global event
-                    # for handler in browser.globalEventTable[mthd]:
+            else:  # CDP Global event
+                if browser.globalEventTable.hasKey(mthd):
                     asyncCheck browser.globalEventTable[mthd](jsn)
+        else: # CDP error (something went wrong with the CDP packet)
+            raise newException(CDPError, "JSON from CDP packet does not contain 'id' or 'method':\n" & packet)
 
-proc addSessionEventCallback*(browser: Browser; sessionId: SessionId; event: ProtocolEvent; handler: EventHandler) =
+proc addGlobalEventCallback*(browser: Browser; event: ProtocolEvent; cb: EventCallback) =
+    browser.globalEventTable[event] = cb
+
+proc addSessionEventCallback*(browser: Browser; sessionId: SessionId; event: ProtocolEvent; cb: EventCallback) =
     if not browser.sessionEventTable.hasKey(sessionId):
-        browser.sessionEventTable[sessionId] = initTable[ProtocolEvent, EventHandler]()
-    browser.sessionEventTable[sessionId][event] = handler
-
-proc waitForSessionEvent*(browser: Browser; sessionId: string;
-                          event: ProtocolEvent): Future[JsonNode] {.async.} =
-    let future = newFuture[JsonNode]()
-    browser.addSessionEventCallback(sessionId, event, proc(jsn: JsonNode) {.async.} =
-        future.complete(jsn))
-    result = await future
-    browser.sessionEventTable[sessionId].del(event)
-
-proc addGlobalEventCallback*(browser: Browser; event: ProtocolEvent; handler: EventHandler) =
-    browser.globalEventTable[event] = handler
+        browser.sessionEventTable[sessionId] = initTable[ProtocolEvent, EventCallback]()
+    browser.sessionEventTable[sessionId][event] = cb
 
 proc waitForGlobalEvent*(browser: Browser; event: ProtocolEvent): Future[JsonNode] {.async.} =
     let future = newFuture[JsonNode]()
@@ -85,13 +90,18 @@ proc waitForGlobalEvent*(browser: Browser; event: ProtocolEvent): Future[JsonNod
     result = await future
     browser.globalEventTable.del(event)
 
-proc deleteSessionEventCallback*(browser: Browser; sessionId: SessionId; event: ProtocolEvent) =
-    if browser.sessionEventTable.hasKey(sessionId):
-        if browser.sessionEventTable[sessionId].hasKey(event):
-            browser.sessionEventTable[sessionId].del(event)
-            log "Deleted session event callback for event: " & event
+proc waitForSessionEvent*(browser: Browser; sessionId: string; event: ProtocolEvent): Future[JsonNode] {.async.} =
+    let future = newFuture[JsonNode]()
+    browser.addSessionEventCallback(sessionId, event, proc(jsn: JsonNode) {.async.} =
+        future.complete(jsn))
+    result = await future
+    browser.sessionEventTable[sessionId].del(event)
 
 proc deleteGlobalEventCallback*(browser: Browser; event: ProtocolEvent) =
     if browser.globalEventTable.hasKey(event):
         browser.globalEventTable.del(event)
-        log "Deleted global event callback for event: " & event
+
+proc deleteSessionEventCallback*(browser: Browser; sessionId: SessionId; event: ProtocolEvent) =
+    if browser.sessionEventTable.hasKey(sessionId):
+        if browser.sessionEventTable[sessionId].hasKey(event):
+            browser.sessionEventTable[sessionId].del(event)

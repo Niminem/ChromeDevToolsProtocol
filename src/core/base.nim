@@ -4,18 +4,16 @@
 import std/[json, asyncdispatch, tables]
 import pkg/ws
 
-template log*(msg: string) = (when defined(debug): echo msg else: discard)
-
 type
     CDPError* = object of CatchableError
     SessionId* = string
     ProtocolEvent* = string
-    EventHandler* = proc(data: JsonNode) {.async.}
+    EventCallback* = proc(data: JsonNode) {.async.}
     ResponseTable* = Table[int, Future[JsonNode]]
-    SessionEventTable* = Table[SessionId, Table[ProtocolEvent, EventHandler]]
-    GlobalEventTable* = Table[ProtocolEvent, EventHandler]
+    SessionEventTable* = Table[SessionId, Table[ProtocolEvent, EventCallback]]
+    GlobalEventTable* = Table[ProtocolEvent, EventCallback]
     Browser* = ref object
-        userDataDir*: string
+        userDataDir*: tuple[dir: string, isTempDir: bool]
         ws*: WebSocket
         requestId*: int
         responseTable*: ResponseTable
@@ -28,7 +26,7 @@ type
 
 proc sendCommand*(browser: Browser; mthd: string; params: JsonNode): Future[JsonNode] {.async.} =
     browser.requestId += 1
-    if browser.requestId > 9999: browser.requestId = 0
+    if browser.requestId > 9999: browser.requestId = 1
     let future = newFuture[JsonNode]()
     browser.responseTable[browser.requestId] = future
     await browser.ws.send($(%*{"id": browser.requestId, "method": mthd, "params": params}))
@@ -36,7 +34,7 @@ proc sendCommand*(browser: Browser; mthd: string; params: JsonNode): Future[Json
 
 proc sendCommand*(browser: Browser; mthd: string): Future[JsonNode] {.async.} =
     browser.requestId += 1
-    if browser.requestId > 9999: browser.requestId = 0
+    if browser.requestId > 9999: browser.requestId = 1
     let future = newFuture[JsonNode]()
     browser.responseTable[browser.requestId] = future
     await browser.ws.send($(%*{"id": browser.requestId, "method": mthd}))
@@ -44,7 +42,7 @@ proc sendCommand*(browser: Browser; mthd: string): Future[JsonNode] {.async.} =
 
 proc sendCommand*(tab: Tab; mthd: string; params: JsonNode): Future[JsonNode] {.async.} =
     tab.browser.requestId += 1
-    if tab.browser.requestId > 9999: tab.browser.requestId = 0
+    if tab.browser.requestId > 9999: tab.browser.requestId = 1
     let msg = %*{"id": tab.browser.requestId, "method": mthd,
                  "sessionId": tab.sessionId, "params": params}
     let future = newFuture[JsonNode]()
@@ -54,7 +52,7 @@ proc sendCommand*(tab: Tab; mthd: string; params: JsonNode): Future[JsonNode] {.
 
 proc sendCommand*(tab: Tab; mthd: string): Future[JsonNode] {.async.} =
     tab.browser.requestId += 1
-    if tab.browser.requestId > 9999: tab.browser.requestId = 0
+    if tab.browser.requestId > 9999: tab.browser.requestId = 1
     let future = newFuture[JsonNode]()
     tab.browser.responseTable[tab.browser.requestId] = future
     await tab.browser.ws.send($(%*{"id": tab.browser.requestId, "method": mthd,

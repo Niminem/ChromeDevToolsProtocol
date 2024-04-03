@@ -1,4 +1,4 @@
-## This module will find the path to `chrome` or `chromium` executable on the system
+## This module will find the path to `chrome` executable on the system
 ## and start it with *remote debugging port* and *user data directory*.
 ##
 ## By default, it will start the browser in **headless mode** using the old version.
@@ -8,12 +8,14 @@
 ## version is the actual browser rather than a separate browser implementation.
 
 import std/[strutils, os, sequtils, osproc, streams]
-import base
 
 type
-    BrowserNotFound = object of CatchableError
+    BrowserError = object of CatchableError
+    ProcessError = object of CatchableError
     HeadlessMode* {.pure.} = enum ## Headless mode for Chrome
-        On, Off, Legacy
+        On = " --headless=new"
+        Off = ""
+        Legacy = " --headless"
 
 
 proc findChromeMac: string =
@@ -26,14 +28,13 @@ proc findChromeMac: string =
         else:
             var alternateDirs = execProcess("mdfind", args = [name], options = {poUsePath}).split("\n")
             alternateDirs.keepItIf(it.contains(name))
-        
             if alternateDirs != @[]:
                 result = alternateDirs[0] & "/Contents/MacOS/Google Chrome"
             else:
-                raise newException(BrowserNotFound, "could not find Chrome using `mdfind`")
+                raise newException(BrowserError, "could not find Chrome using `mdfind`")
 
     except:
-        raise newException(BrowserNotFound, "could not find Chrome in Applications directory")
+        raise newException(BrowserError, "could not find Chrome in Applications dir or via `mdfind` on macOS system")
 
 when defined(Windows):
     import std/registry
@@ -53,14 +54,14 @@ proc findChromeWindows: string =
         discard
 
     if result.len == 0:
-        raise newException(BrowserNotFound, "could not find Chrome")
+        raise newException(BrowserError, "could not find Chrome via default/backup paths or registry on Windows system")
 
 proc findChromeLinux: string =
     const chromeNames = ["google-chrome", "google-chrome-stable", "chromium-browser", "chromium"]
     for name in chromeNames:
         if execCmd("which " & name) == 0:
             return name
-    raise newException(BrowserNotFound, "could not find Chrome")
+    raise newException(BrowserError, "could not find Chrome or Chromium via `which` on Linux system")
 
 proc findChromePath: string =
     when hostOS == "macosx":
@@ -70,19 +71,13 @@ proc findChromePath: string =
     elif hostOS == "linux":
         result = findChromeLinux()
     else:
-        raise newException(BrowserNotFound, "unkown OS in findPath(): " & hostOS)
+        raise newException(BrowserError, "unkown OS in `findPath` procedure: " & hostOS)
 
 proc startChrome*(portNo: int; userDataDir: string; headless: HeadlessMode;
                   chromeArguments: seq[string]): string =
     var command = findChromePath() & " --remote-debugging-port=" & $portNo &
-                " --user-data-dir=" & userDataDir & " --no-first-run"
-    command.add(
-        case headless
-            of HeadlessMode.On: " --headless=new"
-            of HeadlessMode.Off: ""
-            of HeadlessMode.Legacy: " --headless=new"
-            )
-    
+                " --user-data-dir=" & userDataDir & " --no-first-run" & $headless
+
     for arg in chromeArguments:
         command.add(" " & arg.strip())
 
@@ -92,17 +87,17 @@ proc startChrome*(portNo: int; userDataDir: string; headless: HeadlessMode;
     while process.running() and not outputStream.atEnd():
         let line = outputStream.readLine()
         if "DevTools listening" in line:
-            result = line[22 .. ^1] # path to websocket endpoint # https://github.com/aslushnikov/getting-started-with-cdp/blob/master/README.md#protocol-fundamentals
+            result = line[22 .. ^1] # path to CDP websocket endpoint
             break
         elif "Opening in existing browser session" in line:
             process.close()
-            raise newException(CatchableError, "Chrome is using an existing session. Something is wrong.")
-            # TODO: better error handling
+            raise newException(ProcessError,
+                "chrome is using an existing session.\nend all other Chrome Processes and try again " &
+                "(you can leave your normal browser window alone).")
         elif line == "": continue
         else:
-            when defined(debug): log("Chrome instance line: " & line)
-            discard
-        # TODO: do we need to handle errors here?
+            process.close()
+            raise newException(ProcessError, "unexpected output from Chrome: " & line)
     # TODO: for some reason... process stops running before the while loop or maybe
     # after the while loop runs once. Need to investigate this.
     process.close()
