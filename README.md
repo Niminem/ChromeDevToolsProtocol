@@ -4,7 +4,7 @@ Low-level Nim wrapper for [Chrome DevTools Protocol (CDP) v1.3 stable](https://c
 ***Bend Chrome to your will*** with complete control over your browser. Scrape dynamic webpages, create browser automations, and beyond. Wield responsibly ;)
 
 > **Chrome v112 or higher recommended**. [It's better](https://developer.chrome.com/docs/chromium/new-headless),
-    as the new `headless` flag uses the same browser binary rather than a completely seperate implemenation.
+    as the new `headless` flag uses the same browser binary rather than a completely seperate implemenation. It's likely your version of Chrome is a more recent version.
 
 #### NOTE:
 
@@ -12,15 +12,65 @@ This library is intended to be a low-level wrapper of CDP for use in a webcrawle
 amount of maintenance overhead, and ensure reliability of the library in
 production use.
 
-A browser isn't being shipped with this library so we have no way to know which features are available in your version.
+We may include some of the experimental Domains and methods in the future. **PRs welcome**.
 
-This does mean you loose out on a nice API layer by default
-for cutting-edge features (like the [Animation Domain](https://chromedevtools.github.io/devtools-protocol/tot/Animation/)), and will have to use the `sendCommand` procedure to access them.
+If you would like to use an experimental feature (like the [Animation Domain](https://chromedevtools.github.io/devtools-protocol/tot/Animation/)), you will have to use the `sendCommand` procedure to access them. Details below.
 
-We may include some of these experimental domains and methods in the future. **PRs welcome**!
+## Installation
 
-Most of the things you will want to do with CDP can be done with the
-Domains and methods (commands) offered in the 1.3v stable version.
+Install from nimble (pending as of 4/4/24): `nimble install cdp`
+
+Alternatively clone via git: `git clone https://github.com/Niminem/ChromeDevToolsProtocol`
+
+## Basic Usage
+
+```nim
+import std/[json, asyncdispatch]
+import cdp
+
+proc main() {.async.} =
+    let
+        browser = await launchBrowser() # launch a new browser
+        tab = await browser.newTab() # open a new tab
+    await tab.enablePageDomain() # enable the Page domain (for monitoring page events)
+    discard await tab.navigate("https://github.com/Niminem") # navigate to a page
+    discard await browser.waitForSessionEvent(tab.sessionId, $Page.domContentEventFired) # wait for page to load
+    let
+        resp = await tab.evaluate("document.title", %*{"returnByValue": true}) # evaluate a script on the page
+        title = resp["result"]["result"]["value"].to(string) # get the title of the page
+    echo "Title of the page: ", title # Title of the page: Niminem (Leon Lysak) · GitHub
+    await tab.disablePageDomain() # disable the Page domain
+    await browser.close() # close the browser / cdp, websocket, delete userdatadir, terminate browser process
+
+waitFor main()
+```
+
+## Getting Started With CDP
+
+I highly recommend reading Aslushnikov's [README](https://github.com/aslushnikov/getting-started-with-cdp) on using Chrome DevTools Protocol. I'll try my best to explain the concepts
+and how this relates to this API.
+
+### Introduction
+
+The Chrome DevTools Protocol allows for tools to instrument, inspect, debug and profile Chromium, Chrome and other Blink-based browsers (like Microsoft Edge).
+
+Even Chrome DevTools uses this protocol and the team maintains its API.
+
+### Protocol Fundamentals
+
+When Chromium is started with a `--remote-debugging-port=<number>` flag, it starts a Chrome DevTools Protocol server and prints a Websocket URL.
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Currently in development as of 3/24/24. Not ready for general use. ##
 
