@@ -70,13 +70,13 @@ Even Chrome DevTools uses this protocol and the team maintains its API.
 
 When Chrome is started with a `--remote-debugging-port=<number>` flag, it starts a Chrome DevTools Protocol server and creates a WebSocket URL. Clients can create a WebSocket to connect to the URL and start sending CDP commands.
 
-Chrome DevTools protocol is mostly based on [JSONRPC](https://www.jsonrpc.org/specification): each comand is a JSON object with an `id`, a `method`, and an optional `params` (JSON object).
+Chrome DevTools protocol is mostly based on [JSONRPC](https://www.jsonrpc.org/specification)- each comand is a JSON object with an `id`, a `method`, and an optional `params` (JSON object).
 
 A few things to keep in mind:
 - Every command that is sent over to CDP must have a unique `id` parameter. Message responses will be delivered over websocket and will have the same `id`.
 - Incoming WebSocket messages *without* an `id` parameter are **protocol events**.
-- Message order is important in CDP. For example, protocol events related to a CDP command that was sent will be reported before the response.
-- There's a top-level "browser" target that always exists. More on this in the next section.
+- Message order is important in CDP. For example, protocol events that occur as the result of a CDP command will be reported before the response to that CDP command.
+- There's a top-level "browser" target that always exists. More on this in the [next section](#targets--sessions).
 
 This library provides a level of abstraction by wrapping the various CDP commands (methods) in v1.3 stable:
 
