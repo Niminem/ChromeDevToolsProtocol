@@ -1,0 +1,23 @@
+nimTitle	target	domains/target.html	module src/domains/target		0
+nim	Target	domains/target.html#Target	enum Target		10
+nim	activateTarget	domains/target.html#activateTarget,Browser,string	proc activateTarget(browser: Browser; targetId: string): owned(Future[void])		17
+nim	attachToTarget	domains/target.html#attachToTarget,Browser,string	proc attachToTarget(browser: Browser; targetId: string): Future[JsonNode]		23
+nim	closeTarget	domains/target.html#closeTarget,Browser,string	proc closeTarget(browser: Browser; targetId: string): owned(Future[void])		31
+nim	createBrowserContext	domains/target.html#createBrowserContext,Browser,JsonNode	proc createBrowserContext(browser: Browser; params: JsonNode): Future[JsonNode]		39
+nim	createBrowserContext	domains/target.html#createBrowserContext,Browser	proc createBrowserContext(browser: Browser): Future[JsonNode]		44
+nim	createTarget	domains/target.html#createTarget,Browser,string,JsonNode	proc createTarget(browser: Browser; url: string = ""; params: JsonNode): Future[\n    JsonNode]		47
+nim	createTarget	domains/target.html#createTarget,Browser,string	proc createTarget(browser: Browser; url: string = ""): Future[JsonNode]		53
+nim	detachFromTarget	domains/target.html#detachFromTarget,Browser,string	proc detachFromTarget(browser: Browser; sessionId: string): owned(Future[void])		56
+nim	disposeBrowserContext	domains/target.html#disposeBrowserContext,Browser,string	proc disposeBrowserContext(browser: Browser; browserContextId: string): owned(\n    Future[void])		62
+nim	getBrowserContexts	domains/target.html#getBrowserContexts,Browser	proc getBrowserContexts(browser: Browser): Future[JsonNode]		68
+nim	getTargets	domains/target.html#getTargets,Browser,JsonNode	proc getTargets(browser: Browser; params: JsonNode): Future[JsonNode]		74
+nim	getTargets	domains/target.html#getTargets,Browser	proc getTargets(browser: Browser): Future[JsonNode]		79
+nim	setAutoAttach	domains/target.html#setAutoAttach,Browser,bool,bool,JsonNode	proc setAutoAttach(browser: Browser; autoAttach, waitForDebuggerOnStart: bool;\n              params: JsonNode): owned(Future[void])		82
+nim	setAutoAttach	domains/target.html#setAutoAttach,Browser,bool,bool	proc setAutoAttach(browser: Browser; autoAttach, waitForDebuggerOnStart: bool): owned(\n    Future[void])		94
+nim	setDiscoverTargets	domains/target.html#setDiscoverTargets,Browser,bool,JsonNode	proc setDiscoverTargets(browser: Browser; discover: bool; params: JsonNode): owned(\n    Future[void])		98
+nim	setDiscoverTargets	domains/target.html#setDiscoverTargets,Browser,bool	proc setDiscoverTargets(browser: Browser; discover: bool): owned(Future[void])		105
+nimgrp	setautoattach	domains/target.html#setAutoAttach-procs-all	proc		82
+nimgrp	createbrowsercontext	domains/target.html#createBrowserContext-procs-all	proc		39
+nimgrp	createtarget	domains/target.html#createTarget-procs-all	proc		47
+nimgrp	gettargets	domains/target.html#getTargets-procs-all	proc		74
+nimgrp	setdiscovertargets	domains/target.html#setDiscoverTargets-procs-all	proc		98

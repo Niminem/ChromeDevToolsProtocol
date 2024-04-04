@@ -1,0 +1,14 @@
+nimTitle	domdebugger	domains/domdebugger.html	module src/domains/domdebugger		0
+nim	getEventListeners	domains/domdebugger.html#getEventListeners,Tab,string,JsonNode	proc getEventListeners(tab: Tab; objectId: string; params: JsonNode): Future[JsonNode]		10
+nim	getEventListeners	domains/domdebugger.html#getEventListeners,Tab,string	proc getEventListeners(tab: Tab; objectId: string): Future[JsonNode]		17
+nim	removeDOMBreakpoint	domains/domdebugger.html#removeDOMBreakpoint,Tab,int,string	proc removeDOMBreakpoint(tab: Tab; nodeId: int; type: string): Future[JsonNode]		20
+nim	removeEventListenerBreakpoint	domains/domdebugger.html#removeEventListenerBreakpoint,Tab,string,JsonNode	proc removeEventListenerBreakpoint(tab: Tab; eventName: string; params: JsonNode): owned(\n    Future[void])		27
+nim	removeEventListenerBreakpoint	domains/domdebugger.html#removeEventListenerBreakpoint,Tab,string	proc removeEventListenerBreakpoint(tab: Tab; eventName: string): owned(\n    Future[void])		34
+nim	removeXHRBreakpoint	domains/domdebugger.html#removeXHRBreakpoint,Tab,string	proc removeXHRBreakpoint(tab: Tab; url: string): owned(Future[void])		37
+nim	setDOMBreakpoint	domains/domdebugger.html#setDOMBreakpoint,Tab,int,string	proc setDOMBreakpoint(tab: Tab; nodeId: int; type: string): owned(Future[void])		44
+nim	setEventListenerBreakpoint	domains/domdebugger.html#setEventListenerBreakpoint,Tab,string,JsonNode	proc setEventListenerBreakpoint(tab: Tab; eventName: string; params: JsonNode): owned(\n    Future[void])		51
+nim	setEventListenerBreakpoint	domains/domdebugger.html#setEventListenerBreakpoint,Tab,string	proc setEventListenerBreakpoint(tab: Tab; eventName: string): owned(Future[void])		58
+nim	setXHRBreakpoint	domains/domdebugger.html#setXHRBreakpoint,Tab,string	proc setXHRBreakpoint(tab: Tab; url: string): owned(Future[void])		61
+nimgrp	geteventlisteners	domains/domdebugger.html#getEventListeners-procs-all	proc		10
+nimgrp	seteventlistenerbreakpoint	domains/domdebugger.html#setEventListenerBreakpoint-procs-all	proc		51
+nimgrp	removeeventlistenerbreakpoint	domains/domdebugger.html#removeEventListenerBreakpoint-procs-all	proc		27

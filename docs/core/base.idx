@@ -1,0 +1,16 @@
+nimTitle	base	core/base.html	module src/core/base		0
+nim	CDPError	core/base.html#CDPError	object CDPError		8
+nim	RequestId	core/base.html#RequestId	type RequestId		9
+nim	SessionId	core/base.html#SessionId	type SessionId		10
+nim	ProtocolEvent	core/base.html#ProtocolEvent	type ProtocolEvent		11
+nim	EventCallback	core/base.html#EventCallback	type EventCallback		12
+nim	ResponseTable	core/base.html#ResponseTable	type ResponseTable		13
+nim	SessionEventTable	core/base.html#SessionEventTable	type SessionEventTable		14
+nim	GlobalEventTable	core/base.html#GlobalEventTable	type GlobalEventTable		15
+nim	Browser	core/base.html#Browser	type Browser		16
+nim	Tab	core/base.html#Tab	type Tab		25
+nim	sendCommand	core/base.html#sendCommand,Browser,string,JsonNode	proc sendCommand(browser: Browser; mthd: string; params: JsonNode): Future[JsonNode]		30
+nim	sendCommand	core/base.html#sendCommand,Browser,string	proc sendCommand(browser: Browser; mthd: string): Future[JsonNode]		39
+nim	sendCommand	core/base.html#sendCommand,Tab,string,JsonNode	proc sendCommand(tab: Tab; mthd: string; params: JsonNode): Future[JsonNode]		53
+nim	sendCommand	core/base.html#sendCommand,Tab,string	proc sendCommand(tab: Tab; mthd: string): Future[JsonNode]		64
+nimgrp	sendcommand	core/base.html#sendCommand-procs-all	proc		30

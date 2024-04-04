@@ -1,0 +1,36 @@
+nimTitle	runtime	domains/runtime.html	module src/domains/runtime		0
+nim	Runtime	domains/runtime.html#Runtime	enum Runtime		13
+nim	addBinding	domains/runtime.html#addBinding,Tab,string,JsonNode	proc addBinding(tab: Tab; name: string; params: JsonNode): owned(Future[void])		22
+nim	addBinding	domains/runtime.html#addBinding,Tab,string	proc addBinding(tab: Tab; name: string): owned(Future[void])		28
+nim	awaitPromise	domains/runtime.html#awaitPromise,Tab,string,JsonNode	proc awaitPromise(tab: Tab; promiseObjectId: string; params: JsonNode): Future[\n    JsonNode]		31
+nim	awaitPromist	domains/runtime.html#awaitPromist,Tab,string	proc awaitPromist(tab: Tab; promiseObjectId: string): Future[JsonNode]		37
+nim	callFunctionOn	domains/runtime.html#callFunctionOn,Tab,string,JsonNode	proc callFunctionOn(tab: Tab; functionDeclaration: string; params: JsonNode): Future[\n    JsonNode]		41
+nim	callFunctionOn	domains/runtime.html#callFunctionOn,Tab,string	proc callFunctionOn(tab: Tab; functionDeclaration: string): Future[JsonNode]		48
+nim	compileScript	domains/runtime.html#compileScript,Tab,string,string,bool,JsonNode	proc compileScript(tab: Tab; expression, sourceURL: string; persistScript: bool;\n              params: JsonNode): Future[JsonNode]		52
+nim	compileScript	domains/runtime.html#compileScript,Tab,string,string,string	proc compileScript(tab: Tab; expression, sourceURL, persistScript: string): Future[\n    JsonNode]		60
+nim	disableRuntimeDomain	domains/runtime.html#disableRuntimeDomain,Tab	proc disableRuntimeDomain(tab: Tab): owned(Future[void])		64
+nim	discardConsoleEntries	domains/runtime.html#discardConsoleEntries,Tab	proc discardConsoleEntries(tab: Tab): Future[JsonNode]		70
+nim	enableRuntimeDomain	domains/runtime.html#enableRuntimeDomain,Tab	proc enableRuntimeDomain(tab: Tab): owned(Future[void])		76
+nim	evaluate	domains/runtime.html#evaluate,Tab,string,JsonNode	proc evaluate(tab: Tab; expression: string; params: JsonNode): Future[JsonNode]		83
+nim	evaluate	domains/runtime.html#evaluate,Tab,string	proc evaluate(tab: Tab; expression: string): Future[JsonNode]		89
+nim	getProperties	domains/runtime.html#getProperties,Tab,string,JsonNode	proc getProperties(tab: Tab; objectId: string; params: JsonNode): Future[JsonNode]		92
+nim	getProperties	domains/runtime.html#getProperties,Tab,string	proc getProperties(tab: Tab; objectId: string): Future[JsonNode]		98
+nim	globalLexicalScopeNames	domains/runtime.html#globalLexicalScopeNames,Tab,string	proc globalLexicalScopeNames(tab: Tab; executionContextId: string): Future[JsonNode]		101
+nim	globalLexicalScopeNames	domains/runtime.html#globalLexicalScopeNames,Tab	proc globalLexicalScopeNames(tab: Tab): Future[JsonNode]		107
+nim	queryObjects	domains/runtime.html#queryObjects,Tab,string,JsonNode	proc queryObjects(tab: Tab; prototypeObjectId: string; params: JsonNode): Future[\n    JsonNode]		110
+nim	queryObjects	domains/runtime.html#queryObjects,Tab,string	proc queryObjects(tab: Tab; prototypeObjectId: string): Future[JsonNode]		114
+nim	releaseObject	domains/runtime.html#releaseObject,Tab,string	proc releaseObject(tab: Tab; objectId: string): owned(Future[void])		117
+nim	releaseObjectGroup	domains/runtime.html#releaseObjectGroup,Tab,string	proc releaseObjectGroup(tab: Tab; objectGroup: string): owned(Future[void])		123
+nim	removeBinding	domains/runtime.html#removeBinding,Tab,string	proc removeBinding(tab: Tab; name: string): owned(Future[void])		130
+nim	runIfWaitingForDebugger	domains/runtime.html#runIfWaitingForDebugger,Tab	proc runIfWaitingForDebugger(tab: Tab): owned(Future[void])		137
+nim	runScript	domains/runtime.html#runScript,Tab,string,JsonNode	proc runScript(tab: Tab; scriptId: string; params: JsonNode): Future[JsonNode]		144
+nim	runScript	domains/runtime.html#runScript,Tab,string	proc runScript(tab: Tab; scriptId: string): Future[JsonNode]		150
+nim	setAsyncCallStackDepthRuntimeDomain	domains/runtime.html#setAsyncCallStackDepthRuntimeDomain,Tab,int	proc setAsyncCallStackDepthRuntimeDomain(tab: Tab; maxDepth: int): owned(\n    Future[void])		153
+nimgrp	globallexicalscopenames	domains/runtime.html#globalLexicalScopeNames-procs-all	proc		101
+nimgrp	runscript	domains/runtime.html#runScript-procs-all	proc		144
+nimgrp	addbinding	domains/runtime.html#addBinding-procs-all	proc		22
+nimgrp	evaluate	domains/runtime.html#evaluate-procs-all	proc		83
+nimgrp	queryobjects	domains/runtime.html#queryObjects-procs-all	proc		110
+nimgrp	compilescript	domains/runtime.html#compileScript-procs-all	proc		51
+nimgrp	callfunctionon	domains/runtime.html#callFunctionOn-procs-all	proc		40
+nimgrp	getproperties	domains/runtime.html#getProperties-procs-all	proc		92

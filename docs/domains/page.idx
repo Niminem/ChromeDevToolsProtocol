@@ -1,0 +1,37 @@
+nimTitle	page	domains/page.html	module src/domains/page		0
+nim	Page	domains/page.html#Page	enum Page		10
+nim	addScriptToEvaluateOnLoad	domains/page.html#addScriptToEvaluateOnLoad,Tab,string,JsonNode	proc addScriptToEvaluateOnLoad(tab: Tab; source: string; params: JsonNode): Future[\n    JsonNode]		24
+nim	addScriptToEvaluateOnLoad	domains/page.html#addScriptToEvaluateOnLoad,Tab,string	proc addScriptToEvaluateOnLoad(tab: Tab; source: string): Future[JsonNode]		31
+nim	bringToFront	domains/page.html#bringToFront,Tab	proc bringToFront(tab: Tab): owned(Future[void])		34
+nim	captureScreenshot	domains/page.html#captureScreenshot,Tab,JsonNode	proc captureScreenshot(tab: Tab; params: JsonNode): Future[JsonNode]		40
+nim	captureScreenshot	domains/page.html#captureScreenshot,Tab	proc captureScreenshot(tab: Tab): Future[JsonNode]		45
+nim	closePageDomain	domains/page.html#closePageDomain,Tab	proc closePageDomain(tab: Tab): owned(Future[void])		48
+nim	createIsolatedWorld	domains/page.html#createIsolatedWorld,Tab,string,JsonNode	proc createIsolatedWorld(tab: Tab; frameId: string; params: JsonNode): Future[\n    JsonNode]		54
+nim	createIsolatedWorld	domains/page.html#createIsolatedWorld,Tab,string	proc createIsolatedWorld(tab: Tab; frameId: string): Future[JsonNode]		61
+nim	disablePageDomain	domains/page.html#disablePageDomain,Tab	proc disablePageDomain(tab: Tab): owned(Future[void])		64
+nim	enablePageDomain	domains/page.html#enablePageDomain,Tab	proc enablePageDomain(tab: Tab): owned(Future[void])		70
+nim	getAppManifest	domains/page.html#getAppManifest,Tab	proc getAppManifest(tab: Tab): Future[JsonNode]		76
+nim	getFrameTree	domains/page.html#getFrameTree,Tab	proc getFrameTree(tab: Tab): Future[JsonNode]		80
+nim	getLayoutMetrics	domains/page.html#getLayoutMetrics,Tab	proc getLayoutMetrics(tab: Tab): Future[JsonNode]		86
+nim	getNavigationHistory	domains/page.html#getNavigationHistory,Tab	proc getNavigationHistory(tab: Tab): Future[JsonNode]		92
+nim	handleJavaScriptDialog	domains/page.html#handleJavaScriptDialog,Tab,bool,JsonNode	proc handleJavaScriptDialog(tab: Tab; accept: bool; params: JsonNode): Future[\n    JsonNode]		99
+nim	handleJavaScriptDialog	domains/page.html#handleJavaScriptDialog,Tab,bool	proc handleJavaScriptDialog(tab: Tab; accept: bool): Future[JsonNode]		106
+nim	navigate	domains/page.html#navigate,Tab,string,JsonNode	proc navigate(tab: Tab; url: string; params: JsonNode): Future[JsonNode]		109
+nim	navigate	domains/page.html#navigate,Tab,string	proc navigate(tab: Tab; url: string): Future[JsonNode]		115
+nim	navigateToHistoryEntry	domains/page.html#navigateToHistoryEntry,Tab,int	proc navigateToHistoryEntry(tab: Tab; entryId: int): owned(Future[void])		118
+nim	printToPDF	domains/page.html#printToPDF,Tab,JsonNode	proc printToPDF(tab: Tab; params: JsonNode): Future[JsonNode]		125
+nim	reload	domains/page.html#reload,Tab,JsonNode	proc reload(tab: Tab; params: JsonNode): owned(Future[void])		131
+nim	reload	domains/page.html#reload,Tab	proc reload(tab: Tab): owned(Future[void])		136
+nim	removeScriptToEvaluateOnNewDocument	domains/page.html#removeScriptToEvaluateOnNewDocument,Tab,string	proc removeScriptToEvaluateOnNewDocument(tab: Tab; identifier: string): owned(\n    Future[void])		139
+nim	resetNavigationHistory	domains/page.html#resetNavigationHistory,Tab	proc resetNavigationHistory(tab: Tab): owned(Future[void])		146
+nim	setBypassCSP	domains/page.html#setBypassCSP,Tab,bool	proc setBypassCSP(tab: Tab; enabled: bool): owned(Future[void])		153
+nim	setDocumentContent	domains/page.html#setDocumentContent,Tab,string,string	proc setDocumentContent(tab: Tab; frameId, html: string): owned(Future[void])		159
+nim	setInterceptFileChooserDialog	domains/page.html#setInterceptFileChooserDialog,Tab,bool	proc setInterceptFileChooserDialog(tab: Tab; enabled: bool): owned(Future[void])		165
+nim	setLifecycleEventsEnabled	domains/page.html#setLifecycleEventsEnabled,Tab,bool	proc setLifecycleEventsEnabled(tab: Tab; enabled: bool): owned(Future[void])		174
+nim	stopLoading	domains/page.html#stopLoading,Tab	proc stopLoading(tab: Tab): owned(Future[void])		181
+nimgrp	createisolatedworld	domains/page.html#createIsolatedWorld-procs-all	proc		54
+nimgrp	navigate	domains/page.html#navigate-procs-all	proc		109
+nimgrp	capturescreenshot	domains/page.html#captureScreenshot-procs-all	proc		40
+nimgrp	reload	domains/page.html#reload-procs-all	proc		131
+nimgrp	addscripttoevaluateonload	domains/page.html#addScriptToEvaluateOnLoad-procs-all	proc		24
+nimgrp	handlejavascriptdialog	domains/page.html#handleJavaScriptDialog-procs-all	proc		99

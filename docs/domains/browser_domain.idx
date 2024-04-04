@@ -1,0 +1,7 @@
+nimTitle	browser_domain	domains/browser_domain.html	module src/domains/browser_domain		0
+nim	addPrivacySandboxEnrollmentOverride	domains/browser_domain.html#addPrivacySandboxEnrollmentOverride,Tab,string	proc addPrivacySandboxEnrollmentOverride(tab: Tab; url: string): owned(\n    Future[void])		9
+nim	closeBrowserDomain	domains/browser_domain.html#closeBrowserDomain,Browser	proc closeBrowserDomain(browser: Browser): owned(Future[void])		17
+nim	getVersion	domains/browser_domain.html#getVersion,Browser	proc getVersion(browser: Browser): Future[Future]		24
+nim	resetPermissions	domains/browser_domain.html#resetPermissions,Browser,string	proc resetPermissions(browser: Browser; browserContextId: string): owned(\n    Future[void])		31
+nim	resetPermissions	domains/browser_domain.html#resetPermissions,Browser	proc resetPermissions(browser: Browser): owned(Future[void])		37
+nimgrp	resetpermissions	domains/browser_domain.html#resetPermissions-procs-all	proc		31

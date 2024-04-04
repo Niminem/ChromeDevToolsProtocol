@@ -1,0 +1,10 @@
+nimTitle	browser	core/browser.html	module src/core/browser		0
+nim	launchBrowser	core/browser.html#launchBrowser,string,int,seq[string]	proc launchBrowser(userDataDir = ""; portNo = 0; headlessMode = HeadlessMode.On;\n              chromeArguments: seq[string] = @[]): Future[Browser]		13
+nim	close	core/browser.html#close,Browser	proc close(browser: Browser): owned(Future[void])		58
+nim	newTab	core/browser.html#newTab,Browser	proc newTab(browser: Browser): Future[Tab]		81
+nim	addGlobalEventCallback	core/browser.html#addGlobalEventCallback,Browser,ProtocolEvent,EventCallback	proc addGlobalEventCallback(browser: Browser; event: ProtocolEvent; cb: EventCallback)		118
+nim	addSessionEventCallback	core/browser.html#addSessionEventCallback,Browser,SessionId,ProtocolEvent,EventCallback	proc addSessionEventCallback(browser: Browser; sessionId: SessionId;\n                        event: ProtocolEvent; cb: EventCallback)		127
+nim	waitForGlobalEvent	core/browser.html#waitForGlobalEvent,Browser,ProtocolEvent	proc waitForGlobalEvent(browser: Browser; event: ProtocolEvent): Future[JsonNode]		142
+nim	waitForSessionEvent	core/browser.html#waitForSessionEvent,Browser,string,ProtocolEvent	proc waitForSessionEvent(browser: Browser; sessionId: string; event: ProtocolEvent): Future[\n    JsonNode]		154
+nim	deleteGlobalEventCallback	core/browser.html#deleteGlobalEventCallback,Browser,ProtocolEvent	proc deleteGlobalEventCallback(browser: Browser; event: ProtocolEvent)		165
+nim	deleteSessionEventCallback	core/browser.html#deleteSessionEventCallback,Browser,SessionId,ProtocolEvent	proc deleteSessionEventCallback(browser: Browser; sessionId: SessionId;\n                           event: ProtocolEvent)		170

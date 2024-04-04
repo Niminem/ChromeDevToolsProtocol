@@ -1,0 +1,7 @@
+nimTitle	log	domains/log.html	module src/domains/log		0
+nim	Log	domains/log.html#Log	enum Log		10
+nim	clear	domains/log.html#clear	proc clear(context: Browser | Tab): owned(Future[void])		13
+nim	disableLogDomain	domains/log.html#disableLogDomain	proc disableLogDomain(context: Browser | Tab): owned(Future[void])		19
+nim	enableLogDomain	domains/log.html#enableLogDomain	proc enableLogDomain(context: Browser | Tab): owned(Future[void])		25
+nim	startViolationsReport	domains/log.html#startViolationsReport,,JsonNode	proc startViolationsReport(context: Browser | Tab; config: JsonNode): owned(\n    Future[void])		31
+nim	stopViolationsReport	domains/log.html#stopViolationsReport	proc stopViolationsReport(context: Browser | Tab): owned(Future[void])		38

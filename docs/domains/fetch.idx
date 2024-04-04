@@ -1,0 +1,16 @@
+nimTitle	fetch	domains/fetch.html	module src/domains/fetch		0
+nim	Fetch	domains/fetch.html#Fetch	enum Fetch		8
+nim	continueRequest	domains/fetch.html#continueRequest,Tab,string,JsonNode	proc continueRequest(tab: Tab; requestId: string; params: JsonNode): owned(\n    Future[void])		12
+nim	continueRequest	domains/fetch.html#continueRequest,Tab,string	proc continueRequest(tab: Tab; requestId: string): owned(Future[void])		19
+nim	continueWithAuth	domains/fetch.html#continueWithAuth,Tab,string,JsonNode	proc continueWithAuth(tab: Tab; requestId: string; authChallengeResponse: JsonNode): owned(\n    Future[void])		22
+nim	disableFetchDomain	domains/fetch.html#disableFetchDomain,Tab	proc disableFetchDomain(tab: Tab): owned(Future[void])		29
+nim	enableFetchDomain	domains/fetch.html#enableFetchDomain,Tab,JsonNode	proc enableFetchDomain(tab: Tab; params: JsonNode): owned(Future[void])		36
+nim	enableFetchDomain	domains/fetch.html#enableFetchDomain,Tab	proc enableFetchDomain(tab: Tab): owned(Future[void])		43
+nim	failRequest	domains/fetch.html#failRequest,Tab,string,string	proc failRequest(tab: Tab; requestId, errorReason: string): owned(Future[void])		46
+nim	fulfillRequest	domains/fetch.html#fulfillRequest,Tab,string,int,JsonNode	proc fulfillRequest(tab: Tab; requestId: string; responseCode: int; params: JsonNode): owned(\n    Future[void])		53
+nim	fulfillRequest	domains/fetch.html#fulfillRequest,Tab,string,int	proc fulfillRequest(tab: Tab; requestId: string; responseCode: int): owned(\n    Future[void])		61
+nim	getResponseBodyFetchDomain	domains/fetch.html#getResponseBodyFetchDomain,Tab,string	proc getResponseBodyFetchDomain(tab: Tab; requestId: string): Future[JsonNode]		64
+nim	takeResponseBodyAsStream	domains/fetch.html#takeResponseBodyAsStream,Tab,string	proc takeResponseBodyAsStream(tab: Tab; requestId: string): Future[JsonNode]		78
+nimgrp	continuerequest	domains/fetch.html#continueRequest-procs-all	proc		12
+nimgrp	fulfillrequest	domains/fetch.html#fulfillRequest-procs-all	proc		53
+nimgrp	enablefetchdomain	domains/fetch.html#enableFetchDomain-procs-all	proc		36

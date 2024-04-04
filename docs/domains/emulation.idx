@@ -1,0 +1,25 @@
+nimTitle	emulation	domains/emulation.html	module src/domains/emulation		0
+nim	clearDeviceMetricsOverride	domains/emulation.html#clearDeviceMetricsOverride,Tab	proc clearDeviceMetricsOverride(tab: Tab): owned(Future[void])		9
+nim	clearGeolocationOverride	domains/emulation.html#clearGeolocationOverride,Tab	proc clearGeolocationOverride(tab: Tab): owned(Future[void])		16
+nim	clearIdleOverride	domains/emulation.html#clearIdleOverride,Tab	proc clearIdleOverride(tab: Tab): owned(Future[void])		23
+nim	setCPUThrottlingRate	domains/emulation.html#setCPUThrottlingRate,Tab,	proc setCPUThrottlingRate(tab: Tab; rate: int | float): owned(Future[void])		30
+nim	setDefaultBackgroundColorOverride	domains/emulation.html#setDefaultBackgroundColorOverride,Tab,JsonNode	proc setDefaultBackgroundColorOverride(tab: Tab; color: JsonNode): owned(\n    Future[void])		37
+nim	setDeviceMetricsOverride	domains/emulation.html#setDeviceMetricsOverride,Tab,int,int,,bool,JsonNode	proc setDeviceMetricsOverride(tab: Tab; width, height: int;\n                         deviceScaleFactor: float | int; mobile: bool;\n                         params: JsonNode): owned(Future[void])		46
+nim	setDeviceMetricsOverride	domains/emulation.html#setDeviceMetricsOverride,Tab,int,int,,bool	proc setDeviceMetricsOverride(tab: Tab; width, heigh: int;\n                         deviceScaleFactor: float | int; mobile: bool): owned(\n    Future[void])		57
+nim	setEmulatedMedia	domains/emulation.html#setEmulatedMedia,Tab,JsonNode	proc setEmulatedMedia(tab: Tab; params: JsonNode): owned(Future[void])		61
+nim	setEmulatedMedia	domains/emulation.html#setEmulatedMedia,Tab	proc setEmulatedMedia(tab: Tab): owned(Future[void])		67
+nim	setEmulatedVisionDeficiency	domains/emulation.html#setEmulatedVisionDeficiency,Tab,string	proc setEmulatedVisionDeficiency(tab: Tab; type: string): owned(Future[void])		70
+nim	setGeolocationOverride	domains/emulation.html#setGeolocationOverride,Tab,JsonNode	proc setGeolocationOverride(tab: Tab; params: JsonNode): owned(Future[void])		77
+nim	setGeolocationOverride	domains/emulation.html#setGeolocationOverride,Tab	proc setGeolocationOverride(tab: Tab): owned(Future[void])		83
+nim	setIdleOverride	domains/emulation.html#setIdleOverride,Tab,bool,bool	proc setIdleOverride(tab: Tab; isUserActive, isScreenUnlocked: bool): owned(\n    Future[void])		86
+nim	setScriptExecutionDisabled	domains/emulation.html#setScriptExecutionDisabled,Tab,bool	proc setScriptExecutionDisabled(tab: Tab; value: bool): owned(Future[void])		94
+nim	setTimezoneOverride	domains/emulation.html#setTimezoneOverride,Tab,string	proc setTimezoneOverride(tab: Tab; timezoneId: string): owned(Future[void])		101
+nim	setTouchEmulationEnabled	domains/emulation.html#setTouchEmulationEnabled,Tab,bool,JsonNode	proc setTouchEmulationEnabled(tab: Tab; enabled: bool; params: JsonNode): owned(\n    Future[void])		108
+nim	setTouchEmulationEnabled	domains/emulation.html#setTouchEmulationEnabled,Tab,bool	proc setTouchEmulationEnabled(tab: Tab; enabled: bool): owned(Future[void])		115
+nim	setUserAgentOverrideEmulationDomain	domains/emulation.html#setUserAgentOverrideEmulationDomain,Tab,string,JsonNode	proc setUserAgentOverrideEmulationDomain(tab: Tab; userAgent: string;\n                                    params: JsonNode): owned(Future[void])		118
+nim	setUserAgentOverrideEmulationDomain	domains/emulation.html#setUserAgentOverrideEmulationDomain,Tab,string	proc setUserAgentOverrideEmulationDomain(tab: Tab; userAgent: string): owned(\n    Future[void])		126
+nimgrp	setdevicemetricsoverride	domains/emulation.html#setDeviceMetricsOverride-procs-all	proc		45
+nimgrp	setuseragentoverrideemulationdomain	domains/emulation.html#setUserAgentOverrideEmulationDomain-procs-all	proc		118
+nimgrp	setgeolocationoverride	domains/emulation.html#setGeolocationOverride-procs-all	proc		77
+nimgrp	settouchemulationenabled	domains/emulation.html#setTouchEmulationEnabled-procs-all	proc		108
+nimgrp	setemulatedmedia	domains/emulation.html#setEmulatedMedia-procs-all	proc		61

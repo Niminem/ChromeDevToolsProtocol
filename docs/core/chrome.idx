@@ -1,0 +1,3 @@
+nimTitle	chrome	core/chrome.html	module src/core/chrome		0
+nim	HeadlessMode	core/chrome.html#HeadlessMode	enum HeadlessMode		9
+nim	startChrome	core/chrome.html#startChrome,int,string,HeadlessMode,seq[string]	proc startChrome(portNo: int; userDataDir: string; headless: HeadlessMode;\n            chromeArguments: seq[string]): tuple[chrome: Process,\n    cdpEndPoint: string]		70

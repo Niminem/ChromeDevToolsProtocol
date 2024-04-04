@@ -1,0 +1,51 @@
+nimTitle	dom	domains/dom.html	module src/domains/dom		0
+nim	DOM	domains/dom.html#DOM	enum DOM		18
+nim	describeNode	domains/dom.html#describeNode,Tab,JsonNode	proc describeNode(tab: Tab; params: JsonNode): Future[JsonNode]		28
+nim	describeNode	domains/dom.html#describeNode,Tab	proc describeNode(tab: Tab): Future[JsonNode]		35
+nim	disableDOMDomain	domains/dom.html#disableDOMDomain,Tab	proc disableDOMDomain(tab: Tab): owned(Future[void])		38
+nim	enableDOMDomain	domains/dom.html#enableDOMDomain,Tab,JsonNode	proc enableDOMDomain(tab: Tab; params: JsonNode): owned(Future[void])		45
+nim	enableDOMDomain	domains/dom.html#enableDOMDomain,Tab	proc enableDOMDomain(tab: Tab): owned(Future[void])		51
+nim	focus	domains/dom.html#focus,Tab,JsonNode	proc focus(tab: Tab; params: JsonNode): owned(Future[void])		54
+nim	focus	domains/dom.html#focus,Tab	proc focus(tab: Tab): owned(Future[void])		60
+nim	getAttributes	domains/dom.html#getAttributes,Tab,string	proc getAttributes(tab: Tab; nodeId: string): Future[JsonNode]		63
+nim	getBoxModel	domains/dom.html#getBoxModel,Tab,JsonNode	proc getBoxModel(tab: Tab; params: JsonNode): Future[JsonNode]		70
+nim	getBoxModel	domains/dom.html#getBoxModel,Tab	proc getBoxModel(tab: Tab): Future[JsonNode]		76
+nim	getDocument	domains/dom.html#getDocument,Tab,JsonNode	proc getDocument(tab: Tab; params: JsonNode): Future[JsonNode]		79
+nim	getDocument	domains/dom.html#getDocument,Tab	proc getDocument(tab: Tab): Future[JsonNode]		86
+nim	getNodeForLocation	domains/dom.html#getNodeForLocation,Tab,int,int,JsonNode	proc getNodeForLocation(tab: Tab; x, y: int; params: JsonNode): Future[JsonNode]		89
+nim	getNodeForLocation	domains/dom.html#getNodeForLocation,Tab,int,int	proc getNodeForLocation(tab: Tab; x, y: int): Future[JsonNode]		98
+nim	getOuterHTML	domains/dom.html#getOuterHTML,Tab,JsonNode	proc getOuterHTML(tab: Tab; params: JsonNode): Future[JsonNode]		101
+nim	getOuterHTML	domains/dom.html#getOuterHTML,Tab	proc getOuterHTML(tab: Tab): Future[JsonNode]		107
+nim	hideHighlight	domains/dom.html#hideHighlight,Tab	proc hideHighlight(tab: Tab): owned(Future[void])		110
+nim	highlightNode	domains/dom.html#highlightNode,Tab	proc highlightNode(tab: Tab): owned(Future[void])		117
+nim	highlightRect	domains/dom.html#highlightRect,Tab	proc highlightRect(tab: Tab): owned(Future[void])		124
+nim	moveTo	domains/dom.html#moveTo,Tab,string,string,JsonNode	proc moveTo(tab: Tab; nodeId, targetNodeId: string; params: JsonNode): Future[\n    JsonNode]		131
+nim	moveTo	domains/dom.html#moveTo,Tab,string,string	proc moveTo(tab: Tab; nodeId, targetNodeId: string): Future[JsonNode]		139
+nim	querySelector	domains/dom.html#querySelector,Tab,string,string	proc querySelector(tab: Tab; nodeId, selector: string): Future[JsonNode]		142
+nim	querySelectorAll	domains/dom.html#querySelectorAll,Tab,string,string	proc querySelectorAll(tab: Tab; nodeId, selector: string): Future[JsonNode]		149
+nim	removeAttribute	domains/dom.html#removeAttribute,Tab,string,string	proc removeAttribute(tab: Tab; nodeId, name: string): owned(Future[void])		156
+nim	removeNode	domains/dom.html#removeNode,Tab,string	proc removeNode(tab: Tab; nodeId: string): owned(Future[void])		163
+nim	requestChildNodes	domains/dom.html#requestChildNodes,Tab,string,JsonNode	proc requestChildNodes(tab: Tab; nodeId: string; params: JsonNode): owned(\n    Future[void])		170
+nim	requestChildNodes	domains/dom.html#requestChildNodes,Tab,string	proc requestChildNodes(tab: Tab; nodeId: string): owned(Future[void])		178
+nim	requestNode	domains/dom.html#requestNode,Tab,string	proc requestNode(tab: Tab; objectId: string): Future[JsonNode]		181
+nim	resolveNode	domains/dom.html#resolveNode,Tab,JsonNode	proc resolveNode(tab: Tab; params: JsonNode): Future[JsonNode]		190
+nim	scrollIntoViewIfNeeded	domains/dom.html#scrollIntoViewIfNeeded,Tab,JsonNode	proc scrollIntoViewIfNeeded(tab: Tab; params: JsonNode): owned(Future[void])		197
+nim	setAttributesAsText	domains/dom.html#setAttributesAsText,Tab,string,string,JsonNode	proc setAttributesAsText(tab: Tab; nodeId, text: string; params: JsonNode): owned(\n    Future[void])		205
+nim	setAttributesAsText	domains/dom.html#setAttributesAsText,Tab,string,string	proc setAttributesAsText(tab: Tab; nodeId, text: string): owned(Future[void])		214
+nim	setAttributeValue	domains/dom.html#setAttributeValue,Tab,string,string,string	proc setAttributeValue(tab: Tab; nodeId, name, value: string): owned(Future[void])		217
+nim	setFileInputFiles	domains/dom.html#setFileInputFiles,Tab,seq[string],JsonNode	proc setFileInputFiles(tab: Tab; files: seq[string]; params: JsonNode): owned(\n    Future[void])		224
+nim	setFileInputFiles	domains/dom.html#setFileInputFiles,Tab,seq[string]	proc setFileInputFiles(tab: Tab; files: seq[string]): owned(Future[void])		231
+nim	setNodeName	domains/dom.html#setNodeName,Tab,string,string	proc setNodeName(tab: Tab; nodeId, name: string): Future[JsonNode]		234
+nim	setNodeValue	domains/dom.html#setNodeValue,Tab,string,string	proc setNodeValue(tab: Tab; nodeId, value: string): owned(Future[void])		241
+nim	setOuterHTML	domains/dom.html#setOuterHTML,Tab,string,string	proc setOuterHTML(tab: Tab; nodeId, outerHTML: string): owned(Future[void])		248
+nimgrp	focus	domains/dom.html#focus-procs-all	proc		54
+nimgrp	getdocument	domains/dom.html#getDocument-procs-all	proc		79
+nimgrp	requestchildnodes	domains/dom.html#requestChildNodes-procs-all	proc		170
+nimgrp	setattributesastext	domains/dom.html#setAttributesAsText-procs-all	proc		205
+nimgrp	getouterhtml	domains/dom.html#getOuterHTML-procs-all	proc		101
+nimgrp	getnodeforlocation	domains/dom.html#getNodeForLocation-procs-all	proc		89
+nimgrp	getboxmodel	domains/dom.html#getBoxModel-procs-all	proc		70
+nimgrp	moveto	domains/dom.html#moveTo-procs-all	proc		131
+nimgrp	enabledomdomain	domains/dom.html#enableDOMDomain-procs-all	proc		45
+nimgrp	setfileinputfiles	domains/dom.html#setFileInputFiles-procs-all	proc		224
+nimgrp	describenode	domains/dom.html#describeNode-procs-all	proc		28

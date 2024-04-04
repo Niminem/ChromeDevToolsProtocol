@@ -1,0 +1,13 @@
+nimTitle	profiler	domains/profiler.html	module src/domains/profiler		0
+nim	Profiler	domains/profiler.html#Profiler	enum Profiler		8
+nim	disableProfileDomain	domains/profiler.html#disableProfileDomain,Tab	proc disableProfileDomain(tab: Tab): owned(Future[void])		12
+nim	enableProfileDomain	domains/profiler.html#enableProfileDomain,Tab	proc enableProfileDomain(tab: Tab): owned(Future[void])		16
+nim	getBestEffortCoverage	domains/profiler.html#getBestEffortCoverage,Tab	proc getBestEffortCoverage(tab: Tab): Future[JsonNode]		20
+nim	setSamplingInterval	domains/profiler.html#setSamplingInterval,Tab,int	proc setSamplingInterval(tab: Tab; interval: int): owned(Future[void])		25
+nim	start	domains/profiler.html#start,Tab	proc start(tab: Tab): owned(Future[void])		32
+nim	startPreciseCoverage	domains/profiler.html#startPreciseCoverage,Tab,JsonNode	proc startPreciseCoverage(tab: Tab; params: JsonNode): Future[JsonNode]		36
+nim	startPreciseCoverage	domains/profiler.html#startPreciseCoverage,Tab	proc startPreciseCoverage(tab: Tab): Future[JsonNode]		43
+nim	stop	domains/profiler.html#stop,Tab	proc stop(tab: Tab): Future[JsonNode]		46
+nim	stopPreciseCoverage	domains/profiler.html#stopPreciseCoverage,Tab	proc stopPreciseCoverage(tab: Tab): owned(Future[void])		50
+nim	takePreciseCoverage	domains/profiler.html#takePreciseCoverage,Tab	proc takePreciseCoverage(tab: Tab): Future[JsonNode]		55
+nimgrp	startprecisecoverage	domains/profiler.html#startPreciseCoverage-procs-all	proc		36

@@ -1,0 +1,4 @@
+nimTitle	security	domains/security.html	module src/domains/security		0
+nim	disableSecurityDomain	domains/security.html#disableSecurityDomain	proc disableSecurityDomain(context: Browser | Tab): owned(Future[void])		7
+nim	enableSecurityDomain	domains/security.html#enableSecurityDomain	proc enableSecurityDomain(context: Browser | Tab): owned(Future[void])		13
+nim	setIgnoreCertificateErrors	domains/security.html#setIgnoreCertificateErrors,,bool	proc setIgnoreCertificateErrors(context: Browser | Tab; ignore: bool): owned(\n    Future[void])		19

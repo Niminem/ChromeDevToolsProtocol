@@ -1,0 +1,49 @@
+nimTitle	debugger	domains/debugger.html	module src/domains/debugger		0
+nim	Debugger	domains/debugger.html#Debugger	enum Debugger		12
+nim	continueToLocation	domains/debugger.html#continueToLocation,Tab,JsonNode,JsonNode	proc continueToLocation(tab: Tab; location: JsonNode; params: JsonNode): owned(\n    Future[void])		19
+nim	continueToLocation	domains/debugger.html#continueToLocation,Tab,JsonNode	proc continueToLocation(tab: Tab; location: JsonNode): owned(Future[void])		26
+nim	disableDebuggerDomain	domains/debugger.html#disableDebuggerDomain,Tab	proc disableDebuggerDomain(tab: Tab): owned(Future[void])		29
+nim	enableDebuggerDomain	domains/debugger.html#enableDebuggerDomain,Tab	proc enableDebuggerDomain(tab: Tab): Future[JsonNode]		36
+nim	evaluateOnCallFrame	domains/debugger.html#evaluateOnCallFrame,Tab,string,string,JsonNode	proc evaluateOnCallFrame(tab: Tab; callFrameId: string; expression: string;\n                    params: JsonNode): Future[JsonNode]		45
+nim	evaluateOnCallFrame	domains/debugger.html#evaluateOnCallFrame,Tab,string,string	proc evaluateOnCallFrame(tab: Tab; callFrameId: string; expression: string): Future[\n    JsonNode]		53
+nim	getPossibleBreakpoints	domains/debugger.html#getPossibleBreakpoints,Tab,JsonNode,JsonNode	proc getPossibleBreakpoints(tab: Tab; start, params: JsonNode): Future[JsonNode]		57
+nim	getPossibleBreakpoints	domains/debugger.html#getPossibleBreakpoints,Tab,JsonNode	proc getPossibleBreakpoints(tab: Tab; start: JsonNode): Future[JsonNode]		65
+nim	getScriptSource	domains/debugger.html#getScriptSource,Tab,string	proc getScriptSource(tab: Tab; scriptId: string): Future[JsonNode]		68
+nim	pause	domains/debugger.html#pause,Tab	proc pause(tab: Tab): owned(Future[void])		75
+nim	removeBreakpoint	domains/debugger.html#removeBreakpoint,Tab,string	proc removeBreakpoint(tab: Tab; breakpointId: string): owned(Future[void])		82
+nim	restartFrame	domains/debugger.html#restartFrame,Tab,string,JsonNode	proc restartFrame(tab: Tab; callFrameId: string; params: JsonNode): Future[JsonNode]		89
+nim	restartFrame	domains/debugger.html#restartFrame,Tab,string	proc restartFrame(tab: Tab; callFrameId: string): Future[JsonNode]		105
+nim	resume	domains/debugger.html#resume,Tab,JsonNode	proc resume(tab: Tab; params: JsonNode): owned(Future[void])		108
+nim	resume	domains/debugger.html#resume,Tab	proc resume(tab: Tab): owned(Future[void])		114
+nim	searchInContent	domains/debugger.html#searchInContent,Tab,string,string,JsonNode	proc searchInContent(tab: Tab; scriptId, query: string; params: JsonNode): Future[\n    JsonNode]		117
+nim	searchInContent	domains/debugger.html#searchInContent,Tab,string,string	proc searchInContent(tab: Tab; scriptId, query: string): Future[JsonNode]		125
+nim	setAsyncCallStackDepthDebuggerDomain	domains/debugger.html#setAsyncCallStackDepthDebuggerDomain,Tab,int	proc setAsyncCallStackDepthDebuggerDomain(tab: Tab; maxDepth: int): owned(\n    Future[void])		129
+nim	setBreakpoint	domains/debugger.html#setBreakpoint,Tab,JsonNode,JsonNode	proc setBreakpoint(tab: Tab; location: JsonNode; params: JsonNode): Future[JsonNode]		136
+nim	setBreakpoint	domains/debugger.html#setBreakpoint,Tab,JsonNode	proc setBreakpoint(tab: Tab; location: JsonNode): Future[JsonNode]		143
+nim	setBreakpointByUrl	domains/debugger.html#setBreakpointByUrl,Tab,int,JsonNode	proc setBreakpointByUrl(tab: Tab; lineNumber: int; params: JsonNode): Future[JsonNode]		146
+nim	setBreakpointByUrl	domains/debugger.html#setBreakpointByUrl,Tab,int	proc setBreakpointByUrl(tab: Tab; lineNumber: int): Future[JsonNode]		156
+nim	setBreakpointsActive	domains/debugger.html#setBreakpointsActive,Tab,bool	proc setBreakpointsActive(tab: Tab; active: bool): owned(Future[void])		159
+nim	setInstrumentationBreakpoint	domains/debugger.html#setInstrumentationBreakpoint,Tab,string	proc setInstrumentationBreakpoint(tab: Tab; instrumentation: string): Future[JsonNode]		166
+nim	setPauseOnExceptions	domains/debugger.html#setPauseOnExceptions,Tab,string	proc setPauseOnExceptions(tab: Tab; state: string): owned(Future[void])		174
+nim	setScriptSource	domains/debugger.html#setScriptSource,Tab,string,string,JsonNode	proc setScriptSource(tab: Tab; scriptId, scriptSource: string; params: JsonNode): Future[\n    JsonNode]		182
+nim	setScriptSource	domains/debugger.html#setScriptSource,Tab,string,string	proc setScriptSource(tab: Tab; scriptId, scriptSource: string): Future[JsonNode]		193
+nim	setSkipAllPauses	domains/debugger.html#setSkipAllPauses,Tab,bool	proc setSkipAllPauses(tab: Tab; skip: bool): owned(Future[void])		197
+nim	setVariableValue	domains/debugger.html#setVariableValue,Tab,int,string,JsonNode	proc setVariableValue(tab: Tab; scopeNumber: int; variableName: string;\n                 params: JsonNode): owned(Future[void])		205
+nim	setVariableValue	domains/debugger.html#setVariableValue,Tab,int,string	proc setVariableValue(tab: Tab; scopeNumber: int; variableName: string): Future[\n    JsonNode]		214
+nim	stepInto	domains/debugger.html#stepInto,Tab,JsonNode	proc stepInto(tab: Tab; params: JsonNode): owned(Future[void])		218
+nim	stepInto	domains/debugger.html#stepInto,Tab	proc stepInto(tab: Tab): owned(Future[void])		224
+nim	stepOut	domains/debugger.html#stepOut,Tab	proc stepOut(tab: Tab): owned(Future[void])		227
+nim	stepOver	domains/debugger.html#stepOver,Tab,JsonNode	proc stepOver(tab: Tab; params: JsonNode): owned(Future[void])		234
+nim	stepOver	domains/debugger.html#stepOver,Tab	proc stepOver(tab: Tab): owned(Future[void])		240
+nimgrp	setbreakpointbyurl	domains/debugger.html#setBreakpointByUrl-procs-all	proc		146
+nimgrp	setvariablevalue	domains/debugger.html#setVariableValue-procs-all	proc		204
+nimgrp	restartframe	domains/debugger.html#restartFrame-procs-all	proc		89
+nimgrp	searchincontent	domains/debugger.html#searchInContent-procs-all	proc		117
+nimgrp	setbreakpoint	domains/debugger.html#setBreakpoint-procs-all	proc		136
+nimgrp	evaluateoncallframe	domains/debugger.html#evaluateOnCallFrame-procs-all	proc		44
+nimgrp	continuetolocation	domains/debugger.html#continueToLocation-procs-all	proc		19
+nimgrp	setscriptsource	domains/debugger.html#setScriptSource-procs-all	proc		182
+nimgrp	stepinto	domains/debugger.html#stepInto-procs-all	proc		218
+nimgrp	getpossiblebreakpoints	domains/debugger.html#getPossibleBreakpoints-procs-all	proc		57
+nimgrp	resume	domains/debugger.html#resume-procs-all	proc		108
+nimgrp	stepover	domains/debugger.html#stepOver-procs-all	proc		234

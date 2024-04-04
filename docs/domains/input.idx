@@ -1,0 +1,12 @@
+nimTitle	input	domains/input.html	module src/domains/input		0
+nim	cancelDragging	domains/input.html#cancelDragging,Tab	proc cancelDragging(tab: Tab): owned(Future[void])		7
+nim	dispatchKeyEvent	domains/input.html#dispatchKeyEvent,Tab,string,JsonNode	proc dispatchKeyEvent(tab: Tab; type: string; params: JsonNode): owned(\n    Future[void])		14
+nim	dispatchKeyEvent	domains/input.html#dispatchKeyEvent,Tab,string	proc dispatchKeyEvent(tab: Tab; type: string): owned(Future[void])		21
+nim	dispatchMouseEvent	domains/input.html#dispatchMouseEvent,Tab,string,,,JsonNode	proc dispatchMouseEvent(tab: Tab; type: string; x: float | int; y: float | int;\n                   params: JsonNode): owned(Future[void])		25
+nim	dispatchMouseEvent	domains/input.html#dispatchMouseEvent,Tab,string,,	proc dispatchMouseEvent(tab: Tab; type: string; x: float | int; y: float | int): owned(\n    Future[void])		34
+nim	dispatchTouchEvent	domains/input.html#dispatchTouchEvent,Tab,string,seq[JsonNode],JsonNode	proc dispatchTouchEvent(tab: Tab; type: string; touchPoints: seq[JsonNode];\n                   params: JsonNode): owned(Future[void])		37
+nim	dispatchTouchEvent	domains/input.html#dispatchTouchEvent,Tab,string,seq[JsonNode]	proc dispatchTouchEvent(tab: Tab; type: string; touchPoints: seq[JsonNode]): owned(\n    Future[void])		45
+nim	setIgnoreInputEvents	domains/input.html#setIgnoreInputEvents,Tab,bool	proc setIgnoreInputEvents(tab: Tab; ignore: bool): owned(Future[void])		48
+nimgrp	dispatchkeyevent	domains/input.html#dispatchKeyEvent-procs-all	proc		14
+nimgrp	dispatchmouseevent	domains/input.html#dispatchMouseEvent-procs-all	proc		24
+nimgrp	dispatchtouchevent	domains/input.html#dispatchTouchEvent-procs-all	proc		37

@@ -1,0 +1,6 @@
+nimTitle	io	domains/io.html	module src/domains/io		0
+nim	closeIODomain	domains/io.html#closeIODomain	proc closeIODomain(context: Browser | Tab): owned(Future[void])		9
+nim	read	domains/io.html#read,,string,JsonNode	proc read(context: Browser | Tab; handle: string; params: JsonNode): Future[JsonNode]		15
+nim	read	domains/io.html#read,,string	proc read(context: Browser | Tab; handle: string): Future[JsonNode]		21
+nim	resolveBlob	domains/io.html#resolveBlob,,string	proc resolveBlob(context: Browser | Tab; objectId: string): Future[JsonNode]		24
+nimgrp	read	domains/io.html#read-procs-all	proc		15

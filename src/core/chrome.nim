@@ -1,18 +1,12 @@
-## This module will find the path to `chrome` executable on the system
-## and start it with *remote debugging port* and *user data directory*.
-##
-## By default, it will start the browser in **headless mode** using the old version.
-## If you want to use the new version of headless mode, you can pass `HeadlessMode.New`
-## as the third argument as long as you're using Chrome Version >= 112. This is
-## recommended as the old version of headless mode will be deprecated, and the new
-## version is the actual browser rather than a separate browser implementation.
-
+## This module provides the `HeadlessMode` enum and `startChrome` procedure. `startChrome`
+## will find the path to `chrome` executable on the system and launch a new Chrome browser
+## instance.
 import std/[strutils, os, sequtils, osproc, streams]
 
 type
     BrowserError = object of CatchableError
     ProcessError = object of CatchableError
-    HeadlessMode* {.pure.} = enum ## Headless mode for Chrome
+    HeadlessMode* {.pure.} = enum ## Headless mode options for Chrome.
         On = " --headless=new"
         Off = ""
         Legacy = " --headless"
@@ -75,6 +69,9 @@ proc findChromePath: string =
 
 proc startChrome*(portNo: int; userDataDir: string; headless: HeadlessMode;
                   chromeArguments: seq[string]): tuple[chrome: Process, cdpEndPoint: string] =
+    ## Launches a new Chrome browser instance.
+    ## 
+    ## Returns a `tuple` containing the chrome process (`Process`) and the CDP endpoint (`string`).
     var command = findChromePath() & " --remote-debugging-port=" & $portNo &
                 " --user-data-dir=" & userDataDir & " --no-first-run" & $headless
     for arg in chromeArguments:
@@ -104,5 +101,4 @@ proc startChrome*(portNo: int; userDataDir: string; headless: HeadlessMode;
             process.terminate()
             process.close()
         raise newException(ProcessError, "result is empty. could not find CDP websocket endpoint in Chrome output.")
-    echo "is chrome running? ", process.running()
     result.chrome = process

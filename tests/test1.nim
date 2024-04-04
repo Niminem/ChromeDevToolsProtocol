@@ -1,4 +1,4 @@
-import std/[unittest, json, asyncdispatch, osproc]
+import std/[unittest, json, asyncdispatch]
 import cdp
 
 
@@ -6,6 +6,13 @@ proc logGlobalEvent(event: JsonNode) {.async.} = echo "Logging Global Event: " &
 proc logSessionEvent(event: JsonNode) {.async.} = echo "Logging Session Event: " & event["method"].to(string)
 
 test "Proof Of Concept":
+    let browser = waitFor launchBrowser(headlessMode=HeadlessMode.Off)
+    let tab = waitFor browser.newTab()
+    discard waitFor tab.navigate("https://nim-lang.org")
+    waitFor sleepAsync(2000) # for monitoring chrome process in task manager / activity monitor
+    waitFor browser.close()
+
+test "Basic Functionality":
     let browser = waitFor launchBrowser(portNo=5001, headlessMode= HeadlessMode.On,
                                     chromeArguments= @["--suppress-message-center-popups"])
     browser.addGlobalEventCallback("Target.attachedToTarget", logGlobalEvent)

@@ -1,0 +1,7 @@
+nimTitle	performance	domains/performance.html	module src/domains/performance		0
+nim	Performance	domains/performance.html#Performance	enum Performance		8
+nim	disablePerformanceDomain	domains/performance.html#disablePerformanceDomain,Tab	proc disablePerformanceDomain(tab: Tab): owned(Future[void])		11
+nim	enablePerformanceDomain	domains/performance.html#enablePerformanceDomain,Tab,string	proc enablePerformanceDomain(tab: Tab; timeDomain: string): owned(Future[void])		17
+nim	enablePerformanceDomain	domains/performance.html#enablePerformanceDomain,Tab	proc enablePerformanceDomain(tab: Tab): owned(Future[void])		22
+nim	getMetrics	domains/performance.html#getMetrics,Tab	proc getMetrics(tab: Tab): Future[JsonNode]		25
+nimgrp	enableperformancedomain	domains/performance.html#enablePerformanceDomain-procs-all	proc		17

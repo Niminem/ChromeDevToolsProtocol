@@ -1,0 +1,29 @@
+nimTitle	network	domains/network.html	module src/domains/network		0
+nim	Network	domains/network.html#Network	enum Network		11
+nim	clearBrowserCache	domains/network.html#clearBrowserCache,Tab	proc clearBrowserCache(tab: Tab): owned(Future[void])		30
+nim	clearBrowserCookies	domains/network.html#clearBrowserCookies,Tab	proc clearBrowserCookies(tab: Tab): owned(Future[void])		37
+nim	deleteCookies	domains/network.html#deleteCookies,Tab,string,JsonNode	proc deleteCookies(tab: Tab; name: string; params: JsonNode): owned(Future[void])		44
+nim	deleteCookies	domains/network.html#deleteCookies,Tab,string	proc deleteCookies(tab: Tab; name: string): owned(Future[void])		51
+nim	disableNetworkDomain	domains/network.html#disableNetworkDomain,Tab	proc disableNetworkDomain(tab: Tab): owned(Future[void])		54
+nim	emulateNetworkConditions	domains/network.html#emulateNetworkConditions,Tab,bool,,,,JsonNode	proc emulateNetworkConditions(tab: Tab; offline: bool; latency: float | int;\n                         downloadThroughput: float | int;\n                         uploadThroughput: float | int; params: JsonNode): owned(\n    Future[void])		63
+nim	emulateNetworkConditions	domains/network.html#emulateNetworkConditions,Tab,bool,,,	proc emulateNetworkConditions(tab: Tab; offline: bool; latency: float | int;\n                         downloadThroughput: float | int;\n                         uploadThroughput: float | int): owned(Future[void])		74
+nim	enableNetworkDomain	domains/network.html#enableNetworkDomain,Tab,JsonNode	proc enableNetworkDomain(tab: Tab; params: JsonNode): owned(Future[void])		80
+nim	enableNetworkDomain	domains/network.html#enableNetworkDomain,Tab	proc enableNetworkDomain(tab: Tab): owned(Future[void])		85
+nim	getCookies	domains/network.html#getCookies,Tab,JsonNode	proc getCookies(tab: Tab; params: JsonNode): Future[JsonNode]		88
+nim	getCookies	domains/network.html#getCookies,Tab	proc getCookies(tab: Tab): Future[JsonNode]		95
+nim	getRequestPostData	domains/network.html#getRequestPostData,Tab,string	proc getRequestPostData(tab: Tab; requestId: string): Future[JsonNode]		98
+nim	getResponseBodyNetworkDomain	domains/network.html#getResponseBodyNetworkDomain,Tab,string	proc getResponseBodyNetworkDomain(tab: Tab; requestId: string): Future[JsonNode]		105
+nim	setBypassServiceWorker	domains/network.html#setBypassServiceWorker,Tab,bool	proc setBypassServiceWorker(tab: Tab; bypass: bool): owned(Future[void])		112
+nim	setCacheDisabled	domains/network.html#setCacheDisabled,Tab,bool	proc setCacheDisabled(tab: Tab; cacheDisabled: bool): owned(Future[void])		119
+nim	setCookie	domains/network.html#setCookie,Tab,string,string,JsonNode	proc setCookie(tab: Tab; name, value: string; params: JsonNode): owned(\n    Future[void])		126
+nim	setCookie	domains/network.html#setCookie,Tab,string,string	proc setCookie(tab: Tab; name, value: string): owned(Future[void])		136
+nim	setCookies	domains/network.html#setCookies,Tab,seq[JsonNode]	proc setCookies(tab: Tab; cookies: seq[JsonNode]): owned(Future[void])		139
+nim	setExtraHTTPHeaders	domains/network.html#setExtraHTTPHeaders,Tab,JsonNode	proc setExtraHTTPHeaders(tab: Tab; headers: JsonNode): owned(Future[void])		146
+nim	setUserAgentOverrideNetworkDomain	domains/network.html#setUserAgentOverrideNetworkDomain,Tab,string,JsonNode	proc setUserAgentOverrideNetworkDomain(tab: Tab; userAgent: string; params: JsonNode): owned(\n    Future[void])		153
+nim	setUserAgentOverrideNetworkDomain	domains/network.html#setUserAgentOverrideNetworkDomain,Tab,string	proc setUserAgentOverrideNetworkDomain(tab: Tab; userAgent: string): owned(\n    Future[void])		160
+nimgrp	deletecookies	domains/network.html#deleteCookies-procs-all	proc		44
+nimgrp	setcookie	domains/network.html#setCookie-procs-all	proc		126
+nimgrp	emulatenetworkconditions	domains/network.html#emulateNetworkConditions-procs-all	proc		61
+nimgrp	enablenetworkdomain	domains/network.html#enableNetworkDomain-procs-all	proc		80
+nimgrp	getcookies	domains/network.html#getCookies-procs-all	proc		88
+nimgrp	setuseragentoverridenetworkdomain	domains/network.html#setUserAgentOverrideNetworkDomain-procs-all	proc		153
