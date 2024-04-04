@@ -16,7 +16,7 @@ production use.
 
 We may include some of the experimental Domains, methods, and events in the future. **PRs welcome**.
 
-If you would like to use an experimental feature (like the [Animation Domain](https://chromedevtools.github.io/devtools-protocol/tot/Animation/)), you certainly can via the `sendCommand` procedure. Details below.
+If you would like to use an experimental feature (like the [Animation Domain](https://chromedevtools.github.io/devtools-protocol/tot/Animation/)), you certainly can via the `sendCommand` procedure. [Details below](#using-experimental-features).
 
 ## Dependencies
 
