@@ -8,7 +8,7 @@ import std/[json, asyncdispatch]
 import ../core/base
 
 type
-    Network* {.pure} = enum ## **Network Domain** events
+    Network* {.pure.} = enum ## **Network Domain** events
         dataReceived = "Network.dataReceived",
         eventSourceMessageReceived = "Network.eventSourceMessageReceived",
         loadingFailed = "Network.loadingFailed",
