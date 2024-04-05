@@ -113,7 +113,7 @@ Some commands **set state** which is stored **per session** (ex: `Runtime.enable
 
 We call sessions attached to a Browser target *browser sessions*. Similarly, there are *page sessions*, *worker sessions* and so on. In fact, the WebSocket connection is an implicitly created **browser session**.
 
-Although this library currently provides an abstraction over a Page target (tab) and the implicit Browser target, you can create other targets with the generic `sendCommand` procedure. More on this below.
+Although this library currently provides an abstraction over a Page target (tab) and the implicit Browser target, you can create other targets with the generic `sendCommand` procedure. More on this [below](#using-experimental-features).
 
 ### Session Hierarchy
 
@@ -155,7 +155,7 @@ Use this Browser instance (browser Target / browser session) to interact with th
 browser's user data will be stored. If an empty string is passed, a temporary
 directory will be created and used.
 - `portNo` parameter can be used to specify a port number for the browser to
-listen on. If `portNo` is 0, chrome will choose a random port.
+listen on. If `portNo` is 0, Chrome will choose a random port.
 - `headlessMode` parameter can be used to specify whether the browser should be
 launched in headless mode or not. `HeadlessMode.On` (the default) will launch
 the new version of Chrome headless mode (for Chrome >= v112). **Use `HeadlessMode.Legacy`
@@ -166,7 +166,7 @@ is the actual browser rather than a separate browser implementation.
 Chrome browser instance. For a list of all available arguments, see:
 https://peter.sh/experiments/chromium-command-line-switches/ or
 https://github.com/puppeteer/puppeteer/blob/main/packages/puppeteer-core/src/node/ChromeLauncher.ts
-for a list of arguments used by Puppeteer.
+for a list of arguments used by Puppeteer (a high-level API for CDP using NodeJs).
 
 The following command-line arguments are *always* passed to Chrome:
 - `--remote-debugging-port=<portNo>`
@@ -175,7 +175,7 @@ The following command-line arguments are *always* passed to Chrome:
 - `--headless=new` or `--headless` (if `headlessMode` is `HeadlessMode.On` (default) or `HeadlessMode.Legacy`).
 If `HeadlessMode.Off` is passed, Chrome will open a visible window.
 
-**IMPORANT: Make sure you call `browser.close()` when finished with your program or else you will have a zombie process.**
+**IMPORANT: Make sure you call `browser.close()` before quitting or ending your program or else you will have a [zombie process](https://nim-lang.org/docs/osproc.html#close%2CProcess).**
 
 ### The Tab Object
 
@@ -185,7 +185,7 @@ proc newTab*(browser: Browser): Future[Tab] {.async.}
 
 `newTab` procedure creates a new tab (Page) with the browser instance and returns a `Tab` object.
 
-Use this `Tab` object to interact with a page session. You can monitor and intercept network events, execute javascript, and so much more via enabling the appropriate domains. This type of session will be used the most.
+Use this `Tab` object to interact with a page session. You can monitor and intercept network events, execute javascript, and so much more via enabling the appropriate domains. Page sessions will be used the most.
 
 ```nim
 # Pulled from the 'Basic Usage' example above
@@ -200,7 +200,7 @@ await tab.disablePageDomain()
 ```
 
 Enabling the **Page Domain** allows you monitor page events, such as the `domContentEventFired` event. With this access you
-can, for example, scape various parts of a web page after the DOM is ready. Some Domains may need to be enabled to use like
+can, for example, scape various parts of a web page after the DOM is ready. Some Domains may need to be enabled in order to use them like
 this one. In the [API documentation](https://niminem.github.io/CDP/cdp.html), I've provided direct references to each
 domain and each domain's methods/events.
 
@@ -231,10 +231,10 @@ and the other for **Session events** (those corresponding to a session, like a T
 
 There are two ways you can use them.
 
-Either you register a callback procedure that executes each time the CDP event occurs via `addGlobalEventCallback` or `addSessionEventCallback`, or you can use the `waitFor` variant. `waitFor` should be used to pause execution until the event occurs, like the example above where we waited for `Page.domContentEventFired` before interacting with the tab(page).
+Either you register a callback procedure that executes each time the CDP event occurs via `addGlobalEventCallback` or `addSessionEventCallback`, or you can use the `waitFor` variant. `waitFor` should be used to suspend execution until the event occurs, like the example above where we waited for `Page.domContentEventFired` before interacting with the tab.
 
 **NOTE: Currently, there can only be one callback per *Global event*, and only one callback per event for
-each session in *Session events*. If you try adding another callback for the same global/session event, the current callback will be overwritten.**
+each session for *Session events*. If you try adding another callback for the same global/session event, the current callback will be overwritten.**
 
 `deleteGlobalEventCallback` and `deleteSessionEventCallback` can be called to delete the event callbacks.
 
@@ -305,19 +305,17 @@ browser.addGlobalEventCallback("Target.attachedToTarget", procName)
 ```
 
 ### Other API Notes
-- ALL commands provide a generic `Future[Json]` response containing the `id` of the method called. This is how we can map methods to responses as CDP is a single multiplexed web socket connection (I think I said that right). Use `discard` statement as necessary.
-- If any commands should have a non-generic response, it is still of
+- ALL commands provide a generic `Future[Json]` response containing the `id` of the method called. This is how we can map sent commands to the appropriate responses as CDP is a single multiplexed web socket connection (I think I said that right). Anyways, use the `discard` statement as necessary.
+- If any commands should have a non-generic response (aka something you need to parse and use), it is still of
         the same `Future[Json]` type. This is because some CDP `return objects` return optional
         parameters. Example: [DOM.getNodeForLocation](https://chromedevtools.github.io/devtools-protocol/1-3/DOM/).
 There is no efficient way to directly map them all into their return objects.
-- Exception handling is basic, accounting mostly for setup and Chrome process stuff. For now, you have to roll your own for CDP methods. I'm certain that CDP provides error message/description in the response.
-- Your mileage may vary with some of the methods as all aren't covered in testing. **PRs welcome**.
-
+- Exception handling is basic, accounting mostly for setup and Chrome process stuff. For now, you have to roll your own for CDP methods. I'm certain that CDP provides error message/description in the responses you receive.
+- There is no getting around it. You'll need to become familiar with CDP itself and what the different domains/events provide (depending on what you're trying to accomplish of course), but when you do- you will have complete control over your browser. The only limit will be your imagination.
 
 ## Todo List:
-- Create 'Getting Started With CDP' section in the README, similar to [this](https://github.com/aslushnikov/getting-started-with-cdp/blob/master/README.md) but with our API (ensure this also contains all of our API usage).
-- Create **basic** error handling. Chrome process is priority (sometimes the process returns early or chrome itself breaks), followed by events, then CDP responses.
-- Create more tests.
-- We may want to allow multiple callbacks for session or global events (if so, modify the appropriate add/delete/waitFor procs)
-- Create documentation pages for the API via `docgen` to help developers easily reference CDP methods/events (documentation is currently finished for ALL CDP Domains).
-- Include how-to for wrapping currently unsupported experimental domains, and domain methods and events in the README.
+- Look into basic exception handling for errors in CDP responses
+- Add support for Chromium (Windows and Mac as this exists for Linux) and Microsoft Edge (Windows)
+- Add `close` procedure for `Tab` (I think we should destroy the object after it's dettached from the target)
+- Add convenience functions for handling global/session events with the `Tab` object
+- Investigate if there's a need for supporting multiple global and session events (my inclination is no)
