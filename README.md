@@ -26,7 +26,7 @@ If you would like to use an experimental feature (like the [Animation Domain](ht
 
 ## Installation
 
-Install from nimble (pending as of 4/4/24): `nimble install cdp`
+Install from nimble ([pending merge as of 4/4/24](https://github.com/nim-lang/packages/pull/2847)): `nimble install cdp`
 
 Alternatively clone via git: `git clone https://github.com/Niminem/ChromeDevToolsProtocol`
 
