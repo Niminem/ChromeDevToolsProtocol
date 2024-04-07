@@ -183,3 +183,9 @@ proc stopLoading*(tab: Tab) {.async.} =
     ##
     ## Force the page stop all navigations and pending resource fetches.
     discard await tab.sendCommand("Page.stopLoading")
+
+proc addScriptToEvaluateOnNewDocument*(tab: Tab; script: string): Future[JsonNode] {.async.} =
+    ## `Page.addScriptToEvaluateOnNewDocument <https://chromedevtools.github.io/devtools-protocol/1-3/Page/#method-addScriptToEvaluateOnNewDocument>`_
+    ##
+    ## Evaluates given script in every frame upon creation (before loading frame's scripts).
+    result = await tab.sendCommand("Page.addScriptToEvaluateOnNewDocument", %*{"source": script})
