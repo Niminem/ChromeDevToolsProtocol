@@ -21,15 +21,15 @@ type
         loadEventFired = "Page.loadEventFired"
         windowOpen = "Page.windowOpen"
 
-proc addScriptToEvaluateOnLoad*(tab: Tab; source: string; params: JsonNode): Future[JsonNode] {.async.} =
-    ## `Page.addScriptToEvaluateOnLoad
-    ## <https://chromedevtools.github.io/devtools-protocol/1-3/Page/#method-addScriptToEvaluateOnLoad>`_
+proc addScriptToEvaluateOnNewDocument*(tab: Tab; source: string; params: JsonNode): Future[JsonNode] {.async.} =
+    ## `Page.addScriptToEvaluateOnNewDocument
+    ## <https://chromedevtools.github.io/devtools-protocol/1-3/Page/#method-addScriptToEvaluateOnNewDocument>`_
     ##
     ## Evaluates given script in every frame upon creation (before loading frame's scripts).
     params["source"] = newJString(source)
-    result = await tab.sendCommand("Page.addScriptToEvaluateOnLoad", params)
-proc addScriptToEvaluateOnLoad*(tab: Tab; source: string): Future[JsonNode] {.async.} =
-    result = await tab.sendCommand("Page.addScriptToEvaluateOnLoad", %*{"source": source})
+    result = await tab.sendCommand("Page.addScriptToEvaluateOnNewDocument", params)
+proc addScriptToEvaluateOnNewDocument*(tab: Tab; source: string): Future[JsonNode] {.async.} =
+    result = await tab.sendCommand("Page.addScriptToEvaluateOnNewDocument", %*{"source": source})
 
 proc bringToFront*(tab: Tab) {.async.} =
     ## `Page.bringToFront <https://chromedevtools.github.io/devtools-protocol/1-3/Page/#method-bringToFront>`_
