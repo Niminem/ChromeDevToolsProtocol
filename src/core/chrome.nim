@@ -93,9 +93,7 @@ proc startChrome*(portNo: int; userDataDir: string; headless: HeadlessMode;
                 "note: you can leave your normal browser window/session alone.")
         elif line == "": continue
         else:
-            process.terminate()
-            process.close()
-            raise newException(ProcessError, "unexpected output from Chrome: " & line)
+            discard
     if result.cdpEndPoint == "":
         if process.running():
             process.terminate()
