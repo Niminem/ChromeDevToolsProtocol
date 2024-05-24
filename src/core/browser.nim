@@ -108,10 +108,12 @@ proc launchCDPListener(browser: Browser) {.async.} =
                 let sessionId = jsn["sessionId"].to(string)
                 if browser.sessionEventTable.hasKey(sessionId):
                     if browser.sessionEventTable[sessionId].hasKey(mthd):
-                        asyncCheck browser.sessionEventTable[sessionId][mthd](jsn)
+                        {.cast(gcsafe).}:
+                            asyncCheck browser.sessionEventTable[sessionId][mthd](jsn)
             else:  # CDP Global event
                 if browser.globalEventTable.hasKey(mthd):
-                    asyncCheck browser.globalEventTable[mthd](jsn)
+                    {.cast(gcsafe).}:
+                        asyncCheck browser.globalEventTable[mthd](jsn)
         else: # CDP error of some kind
             raise newException(CDPError, "JSON from CDP packet does not contain 'id' or 'method':\n" & packet)
 
